@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+    <properties>
+        <title>Changes</title>
+    </properties>
+    <body>
+        <release version="3.0-rc2" date="SVN">
+            <action dev="gaudefr,catteao" type="add">
+                Possibilité d'activer et désactiver des composants avec le ReadOnlyManager.
+                Possibilité de réinitialiser les composants gérés par le ReadOnlyManager avec une valeur par défaut.
+            </action>
+        </release>
+        <release version="2.28" date="2007-05-14">
+            <action dev="lopezla" type="fix">
+                Agrandissement du champ année dans le composant DateField.
+            </action>
+            <action dev="levequt" type="fix">
+                Prise en compte du type de JComponent pour choisir son mode de remplissage dans le
+                LabelledItemPanel.
+            </action>
+        </release>
+        <release version="2.27" date="2007-02-06">
+            <action dev="lopezla" type="fix">
+                Correction dans le GenericRenderer : les valeurs nulls dans la map de traduction n'étaient pas
+                bien traités.
+            </action>
+            <action dev="lopezla,rophili" type="add">
+                Ajout d'une méthode setEnabled pour le composant FilteredList.
+            </action>
+        </release>
+        <release version="2.26" date="2007-01-15">
+            <action dev="gaudefr,crego" type="add">
+                Ajout d'un disableTextEdition (avec sélection du texte).
+            </action>
+        </release>
+        <release version="2.25" date="2006-11-06">
+            <action dev="gonnot,crego" type="add">
+                Apparition du FilteredList.
+            </action>
+            <action dev="gaudefr" type="fix">
+                Correction du composant NoNullDateField qui doit contrôler la date saisie.
+            </action>
+        </release>
+        <release version="2.24" date="2006-10-04">
+            <action dev="catteao, galaber" type="add">
+                Ajout d'une méthode pour ajouter des composants sans libellé.
+            </action>
+            <action dev="catteao, galaber" type="add">
+                DateField spécifique gérant les valeurs nulles comme égales à l'infini (infini=31/12/9999) et
+                n'affichant rien lorsque la valeur est infinie.
+            </action>
+        </release>
+        <release version="2.23" date="2006-09-04">
+            <action dev="catteao, lopezla" type="fix">
+                Correction de la méthode PopupHelper.tableMouseClicked qui plantait
+                quand le popupHelper lié à la table n'etait pas associé à une action
+                d'édition. Cette classe a besoin d'être revue.
+            </action>
+            <action dev="galaber,touri" type="add">
+                Possibilité d'aligner à gauche les libellés d'un LabelledItemPanel.
+            </action>
+            <action dev="gaudefr,torrent" type="add">
+                Possibilité d'affecter plusieurs tables à un même TableFilterCombo.
+            </action>
+        </release>
+        <release version="2.22" date="2006-07-17">
+            <action dev="gaudefr,torrent" type="add">
+                Modification du popupHelper pour le rendre utilisable en menu contextuel
+                sur une table.
+            </action>
+            <action dev="lopezla" type="add">
+                Mise en place d'une mecanique de gestion de readonly sur les composants
+                graphiques.
+            </action>
+            <action dev="couvreu" type="add">
+                Ajout du paramétrage du séparateur de millier dans le NumericField.
+            </action>
+            <action dev="levequt" type="add">
+                Ajout de 2 méthodes show sur ErrorDialog :
+                show(Component aFrame, String message, String errorMessage, String errorDescription)
+                show(Component aFrame, String message, String errorMessage, Exception error)
+            </action>
+        </release>
+        <release version="2.21" date="2006-06-20" description="fix">
+            <action dev="lopezla" type="add">
+                FilePathField : Ajout de setNames sur le boutons afin de
+                pouvoir les tester unitairement.
+            </action>
+            <action dev="marcona" type="fix">
+                DateField : La date par defaut a l'ouverture du JCalendar n'etait pas
+                enregistree dans le composant. Il fallait changer de date et revenir pour
+                qu'elle soit prise en compte.
+            </action>
+        </release>
+        <release version="2.20" date="2006-04-24" description="add">
+            <action dev="galaber" type="add">
+                CheckBoxRenderer + CheckBoxEditor : Partage de la classe responsable du
+                rendu des valeurs booléennes.
+            </action>
+        </release>
+        <release version="2.19" date="2006-02-23" description="fix">
+            <action dev="torrent" type="add">
+                Wizard : un action preFinalStep peut être spécifier afin de surcharger les
+                données reçues par la finalStep.
+            </action>
+            <action dev="lopezla" type="fix">
+                TextArea : Homogénéisation de la propriété Font par rapport à celle
+                définie par le système.
+            </action>
+            <action dev="gaudefr-galaber" type="fix">
+                ProgressBarLabel : suppression des " " lors du setText pour que setText =
+                getText.
+                Suppression du lien avec agf-test-release.
+            </action>
+            <action dev="torrent" type="add">
+                Wizard : possiblité de retirer des steps. Le StepPanel connait maintenant
+                le wizard.
+            </action>
+            <action dev="gaudefr" type="fix">
+                DateField : correction du composant pour que le undo fonctionne
+                correctement.
+            </action>
+            <action dev="gonnot" type="add">
+                Ajout d'icones pour les composants graphiques apparaissant dans la toolbar
+                du GuiDesigner de IDEA 5.
+            </action>
+        </release>
+        <release version="2.18" date="2006-01-27" description="Extension">
+            <action dev="gaudefr" type="Extension">
+                FilePathField : nommage du textField contenant le nom du fichier et
+                passage à enabled=true.
+            </action>
+        </release>
+        <release version="2.17" date="2006-01-11" description="fix">
+            <action dev="torrent" type="fix">
+                Correction de bugs du composant Date Field et ajout de la possibilité de
+                cacher le bouton du calendrier.
+            </action>
+        </release>
+        <release version="2.16" date="2005-12-08" description="Extension">
+            <action dev="lopezla" type="add">
+                Méthode pour ajouter un composant à un panneau avec des constraintes.
+            </action>
+            <action dev="gaudefr" type="fix">
+                Verification de syntaxe d'expression : gestion des &gt;= et &lt;=
+            </action>
+        </release>
+        <release version="2.15" date="2005-11-18" description="Extension">
+            <action dev="guillie" type="add">
+                ErrorDialog : nommage du textArea contenant le message d'erreur.
+            </action>
+            <action dev="popov" type="add">
+                ajout de net.codjo.gui.toolkit.text.TextArea qui limite la taille d'un
+                JTextArea
+            </action>
+        </release>
+        <release version="2.14" date="2005-09-15" description="Extension">
+            <action dev="popov" type="add">
+                les insets dans LabelledItemPanel peuvent être paramétrés
+            </action>
+            <action dev="galaber" type="add">
+                Ajout d'un model limitant le nombre de colonnes affichées.
+            </action>
+            <action dev="galaber" type="fix">
+                Correction de la méthode changeHeaderRenderer de la classe
+                TableRendererSorter.
+            </action>
+        </release>
+        <release version="2.13" date="2005-06-06" description="Extension">
+            <action dev="galaber" type="add">
+                Ajout d'un model trié pour ComboBox (ComboBoxModelSorter).
+            </action>
+            <action dev="gonnot" type="add">
+                Ajout d'un composant graphique permettant d'afficher une
+                liste avec une possibilité de filtre (FilteredList).
+            </action>
+        </release>
+        <release version="2.12" date="2005-05-23" description="Correction">
+            <action dev="couvreu" type="fix">
+                Réajustement du wizard panel.
+            </action>
+        </release>
+        <release version="2.11" date="2005-03-04" description="Correction">
+            <action dev="rivierv" type="fix">
+                Ajout de noms sur DateField
+            </action>
+        </release>
+        <release version="2.10" date="2005-02-04" description="Correction">
+            <action dev="rivierv" type="fix">
+                Correction sur le composant calendrier : la sélection dans la combo-box de
+                mois
+                ne marchait pas si l'ancienne date était le 31 du mois.
+            </action>
+        </release>
+        <release version="2.09" date="2004-10-11" description="Correction">
+            <action dev="lajmi" type="add">
+                ajout de name sur quelques composants pour les tests IHM.
+            </action>
+        </release>
+        <release version="2.08" date="2004-07-22" description="Correction">
+            <action dev="nadaud" type="add">
+                Utilisation de JTextComponent au lieu de JTextArea dans
+                net.codjo.gui.toolkit.syntax.
+            </action>
+        </release>
+        <release version="2.07" date="2004-03-29" description="Evolution">
+            <action dev="rivierv" type="add">
+                Ajout du package net.codjo.gui.toolkit.syntax permettant
+                de vérifier la syntaxe d'une expression DynamicJava
+            </action>
+        </release>
+        <release version="2.06" date="2004-02-10" description="Correction">
+            <action dev="gonnot" type="fix">
+                Correction mineur et cosmétique
+            </action>
+            <action dev="gonnot" type="fix">
+                Correction Calendrier bug:68
+            </action>
+        </release>
+        <release version="2.05" date="2003-12-19" description="Correction">
+            <action dev="gonnot" type="fix">
+                Correction mineur et cosmétique
+            </action>
+            <action dev="lajmi" type="fix">
+                Correction bug:50 pour l'agrandissement du message d'erreur
+            </action>
+            <action dev="lajmi" type="fix">
+                Correction Calendrier bug:39
+            </action>
+        </release>
+        <release version="2.04" date="2003-04-13" description="Evolution">
+            <action dev="gonnot" type="add">
+                Ajout d'un accessoire pour la gestion de favoris dans le fileChooser.
+            </action>
+            <action dev="gonnot" type="add">
+                Ajout d'un accesseur dans le FilePathField.
+            </action>
+        </release>
+        <release version="2.03" date="2003-04-23" description="Correction">
+            <action dev="gonnot" type="fix">
+                Modification de FilePathField avec la propriété isOnlyInDefaultFolder.
+            </action>
+        </release>
+        <release version="2.02" date="2003-04-23" description="Correction">
+            <action dev="gonnot" type="fix">
+                Ajout de FileChooser.properties pour la traduction du filechooser
+                (Oubli lors de l'extraction)..
+            </action>
+        </release>
+        <release version="2.01" date="2003-04-23" description="Ajout HTMLReport">
+            <action dev="spinae" type="add">
+                Ajout du composant HTMLReport.
+            </action>
+        </release>
+        <release version="2.00" date="2003-04-23" description="Version initiale">
+            <action dev="bultez" type="fix">
+                Extraction de composants graphiques generiques a partir du projet Pims.
+            </action>
+        </release>
+    </body>
+</document>

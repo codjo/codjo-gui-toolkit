@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<project name="guiToolkit">
+    <title>Gui Toolkit</title>
+    <body>
+        <links>
+            <item name="Bug" href="http://4ddev02/track"/>
+            <item name="Wiki" href="http://4ddev02/vqwiki/jsp/wiki.jsp?LibrairieGuiToolkit"/>
+        </links>
+        <menu name="Overview">
+            <item name="Front Page" href="/index.html"/>
+            <item name="Historique" href="/changes-report.html"/>
+        </menu>
+    </body>
+</project>

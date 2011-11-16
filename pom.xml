@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+     | POM Relationships
+     -->
+
+    <parent>
+        <groupId>net.codjo.pom</groupId>
+        <artifactId>codjo-pom-library</artifactId>
+        <version>SNAPSHOT</version>
+    </parent>
+    <groupId>net.codjo.gui-toolkit</groupId>
+    <artifactId>codjo-gui-toolkit</artifactId>
+    <version>3.99-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>net.codjo.expression</groupId>
+            <artifactId>codjo-expression</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.i18n</groupId>
+            <artifactId>codjo-i18n-gui</artifactId>
+        </dependency>
+        <!--Test-->
+        <dependency>
+            <groupId>net.codjo.release-test</groupId>
+            <artifactId>codjo-release-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.codjo.test</groupId>
+            <artifactId>codjo-test-common</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>regexp</groupId>
+            <artifactId>regexp</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jfcunit</groupId>
+            <artifactId>jfcunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>uispec4j</groupId>
+            <artifactId>uispec4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!--
+    | Project Information
+    -->
+
+    <name>Lib &gt; Composants graphiques</name>
+    <description>Librairie Utilitaire de composants graphiques</description>
+    <inceptionYear>2003</inceptionYear>
+
+    <!--
+    | Build Settings
+    -->
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!--
+                     Obligatoire sinon il est impossible de deploier sur le poste a Thierry Leveque
+                     Exemple de commande montrant l'erreur : 
+                     mvn test -Dtest=NumberFieldEditorTest,ModalTest
+                    -->
+                    <forkMode>always</forkMode>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--
+    | Environment Information
+    -->
+
+    <scm>
+        <connection>scm:git:https://github.com/codjo/codjo-gui-toolkit.git</connection>
+        <developerConnection>scm:git:https://github.com/codjo/codjo-gui-toolkit.git</developerConnection>
+        <url>https://github.com/codjo/codjo-gui-toolkit</url>
+    </scm>
+
+</project>
