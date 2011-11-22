@@ -170,7 +170,7 @@ public class JTextFieldCodeLabelAutoCompleterTest extends UISpecTestCase {
                         textBox.pressKey(Key.ENTER);
                         assertEquals("LABEL", textBox.getText());
 
-                        assertEquals("CODE2", codeLabelAutoCompleter.getSelectedCode());
+                        assertEquals("code1", codeLabelAutoCompleter.getSelectedCode());
 
                         codeLabelAutoCompleter.resetText();
 
@@ -244,7 +244,7 @@ public class JTextFieldCodeLabelAutoCompleterTest extends UISpecTestCase {
         codeLabels.put("FR3", "FR0000000003");
         codeLabels.put("FR14", "FR1000000004");
         codeLabels.put("CODE1", "LABEL");
-        codeLabels.put("CODE2", "LABEL");
+        codeLabels.put("code1", "LABEL");
         codeLabels.put("CODE3", "LABEL");
         codeLabelAutoCompleter = new JTextFieldCodeLabelAutoCompleter(fieldText, codeLabels);
 
