@@ -17,10 +17,12 @@ public class JTextFieldCodeLabelAutoCompleter extends AutomaticCompletion {
     private CodeLabel currentSelection;
     private ResetCurrentSelectionListener resetCurrentSelectionListener = new ResetCurrentSelectionListener();
 
+
     public JTextFieldCodeLabelAutoCompleter(JTextComponent comp, Map<String, String> codeToLabel) {
         super(comp);
         this.codeToLabel = codeToLabel;
         list.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
             public Component getListCellRendererComponent(JList list,
                                                           Object value,
                                                           int index,
@@ -75,7 +77,7 @@ public class JTextFieldCodeLabelAutoCompleter extends AutomaticCompletion {
 
     public void setCode(String code) {
         for (Entry<String, String> entry : codeToLabel.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(code)) {
+            if (entry.getKey().equals(code)) {
                 setValue(new CodeLabel(entry.getKey(), entry.getValue()));
                 return;
             }

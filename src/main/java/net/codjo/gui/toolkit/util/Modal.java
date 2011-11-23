@@ -88,6 +88,10 @@ public class Modal {
     private void addModalRestriction() {
         oldGlassPane = parentFrame.getGlassPane();
         parentFrame.setGlassPane(glassPanel);
+        parentFrame.getGlassPane().setVisible(true);
+        parentFrame.invalidate();
+        parentFrame.repaint();
+
         parentFrame.addVetoableChangeListener(parentVeto);
         modalFrame.setLayer(JLayeredPane.MODAL_LAYER);
         parentWasClosable = parentFrame.isClosable();
@@ -99,10 +103,14 @@ public class Modal {
      * Enleve la restriction modal.
      */
     private void removeModalRestriction() {
+        parentFrame.getGlassPane().setVisible(false);
         parentFrame.remove(glassPanel);
         parentFrame.setGlassPane(oldGlassPane);
         parentFrame.removeVetoableChangeListener(parentVeto);
         parentFrame.setClosable(parentWasClosable);
+
+        parentFrame.invalidate();
+        parentFrame.repaint();
     }
 
 
@@ -180,13 +188,11 @@ public class Modal {
     private class ParentVetoListener implements VetoableChangeListener {
         public void vetoableChange(PropertyChangeEvent evt)
               throws PropertyVetoException {
-            if ("selected".equals(evt.getPropertyName())
-                && Boolean.TRUE.equals(evt.getNewValue())) {
+            if ("selected".equals(evt.getPropertyName()) && Boolean.TRUE.equals(evt.getNewValue())) {
                 modalFrame.setSelected(true);
                 throw new PropertyVetoException("En cours d'edition", evt);
             }
             if ("icon".equals(evt.getPropertyName())) {
-//                modalFrame.setIcon(Boolean.TRUE.equals(evt.getNewValue()));
                 modalFrame.setVisible(Boolean.FALSE.equals(evt.getNewValue()));
             }
         }
