@@ -13,7 +13,7 @@
     </parent>
     <groupId>net.codjo.gui-toolkit</groupId>
     <artifactId>codjo-gui-toolkit</artifactId>
-    <version>3.100</version>
+    <version>3.101-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>net.codjo.expression</groupId>
