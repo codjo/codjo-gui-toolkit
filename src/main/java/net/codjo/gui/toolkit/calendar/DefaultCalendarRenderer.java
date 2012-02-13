@@ -30,8 +30,15 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
-    public void setValidDate(List validDate) {
-        final InListHandler newHandler = new InListHandler(validDate);
+    public void setValidDate(List<Date> validDate) {
+        final CheckDateIsNotInListHandler newHandler = new CheckDateIsNotInListHandler(validDate);
+        newHandler.setSuccessor(new WeekEndHandler());
+        setDateHandler(newHandler);
+    }
+
+
+    public void setNoValidDate(List<Date> noValidDates) {
+        final CheckDateIsInListHandler newHandler = new CheckDateIsInListHandler(noValidDates);
         newHandler.setSuccessor(new WeekEndHandler());
         setDateHandler(newHandler);
     }
@@ -144,18 +151,18 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     /**
      * Verifie que la date appartient à la liste des dates valide.
      */
-    private static class InListHandler extends DateHandler {
-        private final List<Object> validTime;
+    private static class CheckDateIsInListHandler extends DateHandler {
+        private final List<Date> dates;
 
 
-        InListHandler(List validDate) {
-            this.validTime = new ArrayList<Object>(validDate);
+        protected CheckDateIsInListHandler(List<Date> dates) {
+            this.dates = new ArrayList<Date>(dates);
         }
 
 
         @Override
         public boolean handle(Date input) {
-            return !validTime.contains(input);
+            return dates.contains(input);
         }
 
 
@@ -163,6 +170,18 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         protected JLabel handleRenderer(Date input, JLabel renderer) {
             renderer.setForeground(Color.lightGray);
             return renderer;
+        }
+    }
+
+    private static class CheckDateIsNotInListHandler extends CheckDateIsInListHandler {
+        CheckDateIsNotInListHandler(List<Date> dates) {
+            super(dates);
+        }
+
+
+        @Override
+        public boolean handle(Date input) {
+            return !super.handle(input);
         }
     }
 }
