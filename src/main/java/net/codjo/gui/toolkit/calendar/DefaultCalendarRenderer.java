@@ -22,6 +22,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     private DateHandler dateHandler;
     private NotInCurrentMonthHandler notInMonth = new NotInCurrentMonthHandler();
+    private Color weekEndColor = Color.lightGray;
+    private Color notValidColor = Color.lightGray;
 
 
     public DefaultCalendarRenderer() {
@@ -41,6 +43,26 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         final CheckDateIsInListHandler newHandler = new CheckDateIsInListHandler(noValidDates);
         newHandler.setSuccessor(new WeekEndHandler());
         setDateHandler(newHandler);
+    }
+
+
+    public Color getWeekEndColor() {
+        return weekEndColor;
+    }
+
+
+    public void setWeekEndColor(Color weekEndColor) {
+        this.weekEndColor = weekEndColor;
+    }
+
+
+    public Color getNotValidColor() {
+        return notValidColor;
+    }
+
+
+    public void setNotValidColor(Color notValidColor) {
+        this.notValidColor = notValidColor;
     }
 
 
@@ -101,9 +123,6 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
-    /**
-     * Handler des dates hors mois courant.
-     */
     private static class NotInCurrentMonthHandler extends DateHandler {
         private final Calendar calendar = Calendar.getInstance();
         private int currentMonth;
@@ -131,10 +150,7 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         }
     }
 
-    /**
-     * Handler des dates week-End.
-     */
-    private static class WeekEndHandler extends DateHandler {
+    private class WeekEndHandler extends DateHandler {
         @Override
         public boolean handle(Date input) {
             return isWeekEnd(input);
@@ -143,15 +159,12 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
 
         @Override
         protected JLabel handleRenderer(Date input, JLabel renderer) {
-            renderer.setForeground(Color.lightGray);
+            renderer.setForeground(weekEndColor);
             return renderer;
         }
     }
 
-    /**
-     * Verifie que la date appartient à la liste des dates valide.
-     */
-    private static class CheckDateIsInListHandler extends DateHandler {
+    private class CheckDateIsInListHandler extends DateHandler {
         private final List<Date> dates;
 
 
@@ -168,12 +181,12 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
 
         @Override
         protected JLabel handleRenderer(Date input, JLabel renderer) {
-            renderer.setForeground(Color.lightGray);
+            renderer.setForeground(notValidColor);
             return renderer;
         }
     }
 
-    private static class CheckDateIsNotInListHandler extends CheckDateIsInListHandler {
+    private class CheckDateIsNotInListHandler extends CheckDateIsInListHandler {
         CheckDateIsNotInListHandler(List<Date> dates) {
             super(dates);
         }

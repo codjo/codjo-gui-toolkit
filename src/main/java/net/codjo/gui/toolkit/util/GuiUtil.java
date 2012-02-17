@@ -40,6 +40,8 @@ import javax.swing.text.JTextComponent;
  */
 public final class GuiUtil {
     public static final Font DEFAULT_FONT = new JLabel().getFont();
+    public static final Font BOLD_FONT = DEFAULT_FONT.deriveFont(Font.BOLD);
+
     public static final Color DISABLED_BACKGROUND_COLOR = new JPanel().getBackground();
     public static final Color DISABLED_FOREGROUND_COLOR = new Color(110, 110, 110);
 
@@ -54,14 +56,14 @@ public final class GuiUtil {
     /**
      * Centre une fenetre dans son <code>Container</code> .
      *
-     * <p> ATTENTION: Pour les fenetres {@link JInternalFrame} , cette methode doit etre appelee apres l'ajout
-     * dans le desktop. (en general dans l'action qui fabrique le {@link JInternalFrame} ). </p>
+     * <p> ATTENTION: Pour les fenetres {@link JInternalFrame} , cette methode doit etre appelee apres l'ajout dans le
+     * desktop. (en general dans l'action qui fabrique le {@link JInternalFrame} ). </p>
      *
      * @param cp La fenetre a centrer
      *
      * @throws IllegalArgumentException si <code>cp</code> est null
-     * @throws IllegalStateException    si <code>cp</code> est une {@link JInternalFrame} et que cette méthode
-     *                                  est appelée avant l'ajout au {@link javax.swing.JDesktopPane}
+     * @throws IllegalStateException    si <code>cp</code> est une {@link JInternalFrame} et que cette méthode est
+     *                                  appelée avant l'ajout au {@link javax.swing.JDesktopPane}
      */
     public static void centerWindow(Component cp) {
         if (cp == null) {

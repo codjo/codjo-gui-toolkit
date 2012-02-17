@@ -56,6 +56,20 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
                     {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
               }
         ));
+
+        renderer.setWeekEndColor(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED,
+                     Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED,
+                     Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
@@ -97,6 +111,18 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
                      Color.WHITE},
               }
         ));
+
+        renderer.setNotValidColor(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
@@ -131,11 +157,28 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
                     {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
               }
         ));
+
+        renderer.setNotValidColor(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {Color.RED, Color.RED, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
     public static void main(String[] args) {
-        JCalendar jcal = new JCalendar();
+        JCalendarMonthView jcal = new JCalendarMonthView();
+        jcal.setMonth(0, "2012");
         jcal.setSelectedDate(new Date(System.currentTimeMillis()));
         final DateHandler handler =
               new DateHandler() {
