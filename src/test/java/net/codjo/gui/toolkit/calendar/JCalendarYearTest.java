@@ -19,7 +19,6 @@ public class JCalendarYearTest extends UISpecTestCase {
 
 
     public void test_nominal() throws Exception {
-
         JCalendarYear calendarYear = new JCalendarYear();
         org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
 
