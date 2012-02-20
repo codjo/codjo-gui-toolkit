@@ -73,6 +73,7 @@ public class JCalendarYear {
         calendar.setLocale(Locale.ENGLISH);
         calendar.setMonth(month, year);
         calendar.getDateRenderer().setNotValidColor(HOLIDAY_COLOR);
+        calendar.enableSelection(false);
     }
 
 

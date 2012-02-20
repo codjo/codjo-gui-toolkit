@@ -69,6 +69,7 @@ public class JCalendarYearTest extends UISpecTestCase {
         calendarYear.setHolidays(holidays);
 
         org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        assertFalse(gui.getTable("Calendar_0").isEnabled());
         assertTrue(gui.getTable("Calendar_0").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "31", "1"}));
         assertTrue(gui.getTable("Calendar_0").rowEquals(1, new Object[]{"2", "3", "4", "5", "6", "7", "8"}));
         assertTrue(gui.getTable("Calendar_0").foregroundEquals(new Object[][]{
@@ -80,6 +81,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_1").isEnabled());
         assertTrue(gui.getTable("Calendar_1").rowEquals(0, new Object[]{"30", "31", "1", "2", "3", "4", "5"}));
         assertTrue(gui.getTable("Calendar_1").rowEquals(1, new Object[]{"6", "7", "8", "9", "10", "11", "12"}));
         assertTrue(gui.getTable("Calendar_1").foregroundEquals(new Object[][]{
@@ -91,6 +93,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_2").isEnabled());
         assertTrue(gui.getTable("Calendar_2").rowEquals(0, new Object[]{"27", "28", "29", "1", "2", "3", "4"}));
         assertTrue(gui.getTable("Calendar_2").rowEquals(1, new Object[]{"5", "6", "7", "8", "9", "10", "11"}));
         assertTrue(gui.getTable("Calendar_2").foregroundEquals(new Object[][]{
@@ -102,6 +105,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_3").isEnabled());
         assertTrue(gui.getTable("Calendar_3").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "31", "1"}));
         assertTrue(gui.getTable("Calendar_3").rowEquals(1, new Object[]{"2", "3", "4", "5", "6", "7", "8"}));
         assertTrue(gui.getTable("Calendar_3").foregroundEquals(new Object[][]{
@@ -113,6 +117,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_4").isEnabled());
         assertTrue(gui.getTable("Calendar_4").rowEquals(0, new Object[]{"30", "1", "2", "3", "4", "5", "6"}));
         assertTrue(gui.getTable("Calendar_4").rowEquals(1, new Object[]{"7", "8", "9", "10", "11", "12", "13"}));
         assertTrue(gui.getTable("Calendar_4").foregroundEquals(new Object[][]{
@@ -124,6 +129,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_5").isEnabled());
         assertTrue(gui.getTable("Calendar_5").rowEquals(0, new Object[]{"28", "29", "30", "31", "1", "2", "3"}));
         assertTrue(gui.getTable("Calendar_5").rowEquals(1, new Object[]{"4", "5", "6", "7", "8", "9", "10"}));
         assertTrue(gui.getTable("Calendar_5").foregroundEquals(new Object[][]{
@@ -135,6 +141,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_6").isEnabled());
         assertTrue(gui.getTable("Calendar_6").rowEquals(0, new Object[]{"25", "26", "27", "28", "29", "30", "1"}));
         assertTrue(gui.getTable("Calendar_6").rowEquals(1, new Object[]{"2", "3", "4", "5", "6", "7", "8"}));
         assertTrue(gui.getTable("Calendar_6").foregroundEquals(new Object[][]{
@@ -146,6 +153,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_7").isEnabled());
         assertTrue(gui.getTable("Calendar_7").rowEquals(0, new Object[]{"30", "31", "1", "2", "3", "4", "5"}));
         assertTrue(gui.getTable("Calendar_7").rowEquals(1, new Object[]{"6", "7", "8", "9", "10", "11", "12"}));
         assertTrue(gui.getTable("Calendar_7").foregroundEquals(new Object[][]{
@@ -157,6 +165,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_8").isEnabled());
         assertTrue(gui.getTable("Calendar_8").rowEquals(0, new Object[]{"27", "28", "29", "30", "31", "1", "2"}));
         assertTrue(gui.getTable("Calendar_8").rowEquals(1, new Object[]{"3", "4", "5", "6", "7", "8", "9"}));
         assertTrue(gui.getTable("Calendar_8").foregroundEquals(new Object[][]{
@@ -168,6 +177,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_9").isEnabled());
         assertTrue(gui.getTable("Calendar_9").rowEquals(0, new Object[]{"1", "2", "3", "4", "5", "6", "7"}));
         assertTrue(gui.getTable("Calendar_9").rowEquals(1, new Object[]{"8", "9", "10", "11", "12", "13", "14"}));
         assertTrue(gui.getTable("Calendar_9").foregroundEquals(new Object[][]{
@@ -179,6 +189,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_10").isEnabled());
         assertTrue(gui.getTable("Calendar_10").rowEquals(0, new Object[]{"29", "30", "31", "1", "2", "3", "4"}));
         assertTrue(gui.getTable("Calendar_10").rowEquals(1, new Object[]{"5", "6", "7", "8", "9", "10", "11"}));
         assertTrue(gui.getTable("Calendar_10").foregroundEquals(new Object[][]{
@@ -190,6 +201,7 @@ public class JCalendarYearTest extends UISpecTestCase {
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
 
+        assertFalse(gui.getTable("Calendar_11").isEnabled());
         assertTrue(gui.getTable("Calendar_11").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "1", "2"}));
         assertTrue(gui.getTable("Calendar_11").rowEquals(1, new Object[]{"3", "4", "5", "6", "7", "8", "9"}));
         assertTrue(gui.getTable("Calendar_11").foregroundEquals(new Object[][]{
