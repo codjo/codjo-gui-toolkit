@@ -112,7 +112,7 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
               }
         ));
 
-        renderer.setNotValidColor(Color.RED);
+        renderer.setNotValidForeground(Color.RED);
 
         assertTrue(theTable.foregroundEquals(
               new Object[][]{
@@ -158,7 +158,7 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
               }
         ));
 
-        renderer.setNotValidColor(Color.RED);
+        renderer.setNotValidForeground(Color.RED);
 
         assertTrue(theTable.foregroundEquals(
               new Object[][]{

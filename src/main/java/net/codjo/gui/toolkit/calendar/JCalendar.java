@@ -67,7 +67,7 @@ public class JCalendar extends JPanel {
         });
 
         setLocale(calendarModel.getLocale());
-        addTableSelectionListener();
+//        addTableSelectionListener();
         jbInit();
         calendar.setName("CalendarTable");
         monthComboBox.setName("MonthCombo");
@@ -145,7 +145,7 @@ public class JCalendar extends JPanel {
     }
 
 
-    private void selectCalendarModelDate() {
+    protected void selectCalendarModelDate() {
         for (int c = 0; c < calendar.getColumnCount(); c++) {
             for (int r = 0; r < calendar.getRowCount(); r++) {
                 if (calendar.getValueAt(r, c).equals(calendarModel.getDate())) {
@@ -218,7 +218,7 @@ public class JCalendar extends JPanel {
     }
 
 
-    private void setSelectedDateTemp(java.util.Date selectedDate) {
+    protected void setSelectedDateTemp(java.util.Date selectedDate) {
         java.util.Date oldSelectedDate = this.selectedDate;
         if (selectedDate != null && !getRootDateHandler().selectable(selectedDate)) {
             this.selectedDate = null;

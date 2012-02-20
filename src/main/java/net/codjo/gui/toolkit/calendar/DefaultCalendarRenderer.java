@@ -20,10 +20,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @version $Revision: 1.10 $
  */
 public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
+    public static final Color DEFAULT_NOT_VALID_FOREGROUND = Color.lightGray;
+    public static final Color DEFAULT_NOT_VALID_BACKGROUND = Color.WHITE;
+
     private DateHandler dateHandler;
     private NotInCurrentMonthHandler notInMonth = new NotInCurrentMonthHandler();
     private Color weekEndColor = Color.lightGray;
-    private Color notValidColor = Color.lightGray;
+    private Color notValidForeground = DEFAULT_NOT_VALID_FOREGROUND;
+    private Color notValidBackground = DEFAULT_NOT_VALID_BACKGROUND;
 
 
     public DefaultCalendarRenderer() {
@@ -56,13 +60,23 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
-    public Color getNotValidColor() {
-        return notValidColor;
+    public Color getNotValidForeground() {
+        return notValidForeground;
     }
 
 
-    public void setNotValidColor(Color notValidColor) {
-        this.notValidColor = notValidColor;
+    public void setNotValidForeground(Color notValidForeground) {
+        this.notValidForeground = notValidForeground;
+    }
+
+
+    public Color getNotValidBackground() {
+        return notValidBackground;
+    }
+
+
+    public void setNotValidBackground(Color notValidBackground) {
+        this.notValidBackground = notValidBackground;
     }
 
 
@@ -181,7 +195,8 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
 
         @Override
         protected JLabel handleRenderer(Date input, JLabel renderer) {
-            renderer.setForeground(notValidColor);
+            renderer.setForeground(notValidForeground);
+            renderer.setBackground(notValidBackground);
             return renderer;
         }
     }

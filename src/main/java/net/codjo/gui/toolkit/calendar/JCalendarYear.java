@@ -1,7 +1,10 @@
 package net.codjo.gui.toolkit.calendar;
+import com.jidesoft.comparator.DateComparator;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +16,8 @@ import javax.swing.JPanel;
  *
  */
 public class JCalendarYear {
-    public static final Color HOLIDAY_COLOR = Color.RED;
+    public static final Color HOLIDAY_FOREGROUND = Color.BLACK;
+    public static final Color HOLIDAY_BACKGROUND = new Color(200, 200, 255);
 
     private JPanel mainPanel;
     private JCalendarMonthView january;
@@ -45,6 +49,8 @@ public class JCalendarYear {
         monthIndexToCalendar.put(Calendar.OCTOBER, october);
         monthIndexToCalendar.put(Calendar.NOVEMBER, november);
         monthIndexToCalendar.put(Calendar.DECEMBER, december);
+
+        setEditionMode(false);
     }
 
 
@@ -72,8 +78,15 @@ public class JCalendarYear {
     private void initCalendar(int month, String year, JCalendarMonthView calendar) {
         calendar.setLocale(Locale.ENGLISH);
         calendar.setMonth(month, year);
-        calendar.getDateRenderer().setNotValidColor(HOLIDAY_COLOR);
-        calendar.enableSelection(false);
+        calendar.getDateRenderer().setNotValidForeground(HOLIDAY_FOREGROUND);
+        calendar.getDateRenderer().setNotValidBackground(HOLIDAY_BACKGROUND);
+    }
+
+
+    public void setEditionMode(boolean editionMode) {
+        for (JCalendarMonthView calendarMonthView : monthIndexToCalendar.values()) {
+            calendarMonthView.enableSelection(editionMode);
+        }
     }
 
 
@@ -126,5 +139,15 @@ public class JCalendarYear {
             JCalendarMonthView calendarMonthView = monthIndexToCalendar.get(monthIndex);
             calendarMonthView.getDateRenderer().setNoValidDate(holidayList);
         }
+    }
+
+
+    public List<Date> getSelectedDates() {
+        List<Date> selectedDates = new ArrayList<Date>();
+        for (JCalendarMonthView calendarMonthView : monthIndexToCalendar.values()) {
+            selectedDates.addAll(calendarMonthView.getSelectedDates());
+        }
+        Collections.sort(selectedDates, DateComparator.getInstance());
+        return selectedDates;
     }
 }

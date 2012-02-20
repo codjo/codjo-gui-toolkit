@@ -44,6 +44,7 @@ public final class GuiUtil {
 
     public static final Color DISABLED_BACKGROUND_COLOR = new JPanel().getBackground();
     public static final Color DISABLED_FOREGROUND_COLOR = new Color(110, 110, 110);
+    public static final Color DEFAULT_BLACK_COLOR = new JLabel().getForeground();
 
 
     /**

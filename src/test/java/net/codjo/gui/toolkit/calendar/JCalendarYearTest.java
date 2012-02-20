@@ -7,15 +7,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import net.codjo.gui.toolkit.util.GuiUtil;
 import org.uispec4j.UISpecTestCase;
 /**
  *
  */
 
 public class JCalendarYearTest extends UISpecTestCase {
-    private static final Color BLACK = new JLabel().getForeground();
-    private static final Color HOLIDAY_COLOR = JCalendarYear.HOLIDAY_COLOR;
+    private static final Color BLACK = GuiUtil.DEFAULT_BLACK_COLOR;
+    private static final Color HOLIDAY_COLOR = JCalendarYear.HOLIDAY_FOREGROUND;
 
 
     public void test_nominal() throws Exception {
@@ -234,6 +234,56 @@ public class JCalendarYearTest extends UISpecTestCase {
         catch (IllegalArgumentException e) {
             assertEquals("The holidays list contains null dates!!", e.getMessage());
         }
+    }
+
+
+    public void test_editionMode() {
+        JCalendarYear calendarYear = new JCalendarYear();
+        calendarYear.setEditionMode(true);
+        calendarYear.setYear("2012");
+        calendarYear.setLocale(Locale.FRENCH);
+
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        gui.getTable("Calendar_0").click(2, 3);
+        gui.getTable("Calendar_1").click(2, 3);
+        gui.getTable("Calendar_2").click(2, 3);
+        gui.getTable("Calendar_3").click(2, 3);
+        gui.getTable("Calendar_4").click(2, 3);
+        gui.getTable("Calendar_5").click(2, 3);
+        gui.getTable("Calendar_6").click(2, 3);
+        gui.getTable("Calendar_7").click(2, 3);
+        gui.getTable("Calendar_8").click(2, 3);
+        gui.getTable("Calendar_9").click(2, 3);
+        gui.getTable("Calendar_10").click(2, 3);
+        gui.getTable("Calendar_11").click(2, 3);
+        gui.getTable("Calendar_11").click(3, 3);
+        gui.getTable("Calendar_11").click(4, 2);
+
+        assertSelectedDates(new String[]{
+              "2012-01-12",
+              "2012-02-16",
+              "2012-03-15",
+              "2012-04-12",
+              "2012-05-17",
+              "2012-06-14",
+              "2012-07-12",
+              "2012-08-16",
+              "2012-09-13",
+              "2012-10-18",
+              "2012-11-15",
+              "2012-12-13",
+              "2012-12-20",
+              "2012-12-26"
+        }, calendarYear);
+    }
+
+
+    private void assertSelectedDates(String[] expectedDates, JCalendarYear calendarYear) {
+        List<Date> dates = new ArrayList<Date>();
+        for (String date : expectedDates) {
+            dates.add(java.sql.Date.valueOf(date));
+        }
+        assertEquals(dates, calendarYear.getSelectedDates());
     }
 
 
