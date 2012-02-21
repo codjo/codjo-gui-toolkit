@@ -20,6 +20,7 @@ public class JCalendarMonthView extends JCalendar {
     private JLabel monthLabel;
     private List<Date> selectedDates = new ArrayList<Date>();
     private int currentMonth;
+    private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener>();
 
 
     public JCalendarMonthView() {
@@ -40,11 +41,6 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
-    @Override
-    protected void selectCalendarModelDate() {
-    }
-
-
     public void setMonth(int month, String year) {
         currentMonth = month;
         calendar.setName("Calendar_" + month);
@@ -58,13 +54,9 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
-    public void enableSelection(boolean enable) {
-        calendar.setEnabled(enable);
-    }
-
-
-    private String capitalizeMonthText(String month) {
-        return month.substring(0, 1).toUpperCase() + month.substring(1);
+    @Override
+    public Date getSelectedDate() {
+        throw new RuntimeException("method not supported for " + getClass().getName());
     }
 
 
@@ -73,9 +65,23 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
+    public void addDateSelectionListener(DateSelectionListener dateSelectionListener) {
+        dateSelectionListeners.add(dateSelectionListener);
+    }
+
+
+    public void enableSelection(boolean enable) {
+        calendar.setEnabled(enable);
+    }
+
+
     @Override
-    public Date getSelectedDate() {
-        throw new RuntimeException("method not supported for " + getClass().getName());
+    protected void selectCalendarModelDate() {
+    }
+
+
+    private String capitalizeMonthText(String month) {
+        return month.substring(0, 1).toUpperCase() + month.substring(1);
     }
 
 
@@ -104,9 +110,11 @@ public class JCalendarMonthView extends JCalendar {
             else {
                 selectedDates.add(date);
             }
-            
+
             JCalendarMonthView.this.getDateRenderer().setNoValidDate(selectedDates);
             calendar.repaint();
+
+            fireDateSelectionChanged();
         }
 
 
@@ -115,6 +123,14 @@ public class JCalendarMonthView extends JCalendar {
             return cal.get(Calendar.MONTH) == month;
         }
     }
+
+
+    private void fireDateSelectionChanged() {
+        for (DateSelectionListener dateSelectionListener : dateSelectionListeners) {
+            dateSelectionListener.selectionChanged();
+        }
+    }
+
 
     private class MonthViewCalendarRenderer extends DefaultCalendarRenderer {
         @Override

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -149,5 +148,21 @@ public class JCalendarYear {
         }
         Collections.sort(selectedDates, DateComparator.getInstance());
         return selectedDates;
+    }
+
+
+    public void addDateSelectionListener(DateSelectionListener listener) {
+        january.addDateSelectionListener(listener);
+        february.addDateSelectionListener(listener);
+        march.addDateSelectionListener(listener);
+        april.addDateSelectionListener(listener);
+        may.addDateSelectionListener(listener);
+        june.addDateSelectionListener(listener);
+        july.addDateSelectionListener(listener);
+        august.addDateSelectionListener(listener);
+        september.addDateSelectionListener(listener);
+        october.addDateSelectionListener(listener);
+        november.addDateSelectionListener(listener);
+        december.addDateSelectionListener(listener);
     }
 }

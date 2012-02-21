@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import net.codjo.gui.toolkit.util.GuiUtil;
+import net.codjo.test.common.LogString;
 import org.uispec4j.UISpecTestCase;
 /**
  *
@@ -100,6 +101,29 @@ public class JCalendarMonthViewTest extends UISpecTestCase {
               {BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
         }));
+    }
+
+
+    public void test_monthListener() {
+        LogString logString = new LogString();
+
+        JCalendarMonthView calendar = new JCalendarMonthView();
+        calendar.setMonth(Calendar.FEBRUARY, "2012");
+        calendar.addDateSelectionListener(new DateSelectionListenerMock(logString));
+
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendar);
+
+        gui.getTable().click(0, 0);
+        assertEquals("", logString.getContent());
+
+        gui.getTable().click(1, 0);
+        assertEquals("selectionChanged()", logString.getContent());
+        
+        gui.getTable().click(1, 0);
+        assertEquals("selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable().click(2, 5);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged()", logString.getContent());
     }
 
 

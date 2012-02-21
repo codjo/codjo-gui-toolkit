@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.swing.JFrame;
 import net.codjo.gui.toolkit.util.GuiUtil;
+import net.codjo.test.common.LogString;
 import org.uispec4j.UISpecTestCase;
 /**
  *
@@ -275,6 +276,74 @@ public class JCalendarYearTest extends UISpecTestCase {
               "2012-12-20",
               "2012-12-26"
         }, calendarYear);
+    }
+
+
+    public void test_dateSelectionListener() {
+        LogString logString = new LogString();
+
+        JCalendarYear calendarYear = new JCalendarYear();
+        calendarYear.setEditionMode(true);
+        calendarYear.setYear("2012");
+        calendarYear.setLocale(Locale.FRENCH);
+
+        calendarYear.addDateSelectionListener(new DateSelectionListenerMock(logString));
+
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+
+        gui.getTable("Calendar_0").click(2, 3);
+        assertEquals("selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_1").click(0, 0);
+        assertEquals("selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_1").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_2").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_3").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged(), selectionChanged()",
+                     logString.getContent());
+
+        logString.clear();
+
+        gui.getTable("Calendar_4").click(2, 3);
+        assertEquals("selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_5").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_6").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_7").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged(), selectionChanged()",
+                     logString.getContent());
+
+        logString.clear();
+
+        gui.getTable("Calendar_8").click(2, 3);
+        assertEquals("selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_9").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_10").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_11").click(2, 3);
+        assertEquals("selectionChanged(), selectionChanged(), selectionChanged(), selectionChanged()",
+                     logString.getContent());
+
+        logString.clear();
+
+        gui.getTable("Calendar_11").click(3, 3);
+        assertEquals("selectionChanged()", logString.getContent());
+
+        gui.getTable("Calendar_11").click(4, 2);
+        assertEquals("selectionChanged(), selectionChanged()", logString.getContent());
     }
 
 
