@@ -95,18 +95,9 @@ public class JCalendarYear {
 
 
     public void setLocale(Locale locale) {
-        january.setLocale(locale);
-        february.setLocale(locale);
-        march.setLocale(locale);
-        april.setLocale(locale);
-        may.setLocale(locale);
-        june.setLocale(locale);
-        july.setLocale(locale);
-        august.setLocale(locale);
-        september.setLocale(locale);
-        october.setLocale(locale);
-        november.setLocale(locale);
-        december.setLocale(locale);
+        for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
+            monthView.setLocale(locale);
+        }
     }
 
 
@@ -152,17 +143,15 @@ public class JCalendarYear {
 
 
     public void addDateSelectionListener(DateSelectionListener listener) {
-        january.addDateSelectionListener(listener);
-        february.addDateSelectionListener(listener);
-        march.addDateSelectionListener(listener);
-        april.addDateSelectionListener(listener);
-        may.addDateSelectionListener(listener);
-        june.addDateSelectionListener(listener);
-        july.addDateSelectionListener(listener);
-        august.addDateSelectionListener(listener);
-        september.addDateSelectionListener(listener);
-        october.addDateSelectionListener(listener);
-        november.addDateSelectionListener(listener);
-        december.addDateSelectionListener(listener);
+        for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
+            monthView.addDateSelectionListener(listener);
+        }
+    }
+
+
+    public void removeDateSelectionListener(DateSelectionListener listener) {
+        for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
+            monthView.removeDateSelectionListener(listener);
+        }
     }
 }

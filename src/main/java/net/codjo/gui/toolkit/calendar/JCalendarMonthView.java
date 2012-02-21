@@ -70,6 +70,11 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
+    public void removeDateSelectionListener(DateSelectionListener dateSelectionListener) {
+        dateSelectionListeners.remove(dateSelectionListener);
+    }
+
+
     public void enableSelection(boolean enable) {
         calendar.setEnabled(enable);
     }
