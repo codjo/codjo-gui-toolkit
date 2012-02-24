@@ -17,8 +17,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -385,7 +383,7 @@ public class DateField extends AbstractDateField {
 
 
     private void setMaxLengthKeyListener(final JTextField field, final int maxLength) {
-        field.addKeyListener(new DateKeyAdatper(field, maxLength));
+        field.addKeyListener(new NumberKeyAdapter(field, maxLength));
     }
 
 
@@ -643,33 +641,6 @@ public class DateField extends AbstractDateField {
 
 
         public void removeUpdate(DocumentEvent event) {
-        }
-    }
-
-    private static final class DateKeyAdatper extends KeyAdapter {
-        private final JTextField field;
-        private final int maxLength;
-
-
-        DateKeyAdatper(JTextField field, int maxLength) {
-            this.field = field;
-            this.maxLength = maxLength;
-        }
-
-
-        @Override
-        public void keyTyped(KeyEvent evt) {
-            if ((evt.getKeyChar() != KeyEvent.VK_BACK_SPACE
-                 && evt.getKeyCode() != KeyEvent.VK_DELETE)) {
-                if (field.getText().length() >= maxLength
-                    && (field.getSelectedText() == null
-                        || field.getSelectedText().length() == 0)) {
-                    evt.consume();
-                }
-                else if (evt.getKeyChar() < '0' || evt.getKeyChar() > '9') {
-                    evt.consume();
-                }
-            }
         }
     }
 

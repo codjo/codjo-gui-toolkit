@@ -54,6 +54,15 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
+    public void setHolidays(List<Date> holidayList) {
+        if (holidayList == null) {
+            holidayList = new ArrayList<Date>();
+        }
+        this.selectedDates = holidayList;
+        getDateRenderer().setNoValidDate(holidayList);
+    }
+
+
     @Override
     public Date getSelectedDate() {
         throw new RuntimeException("method not supported for " + getClass().getName());
