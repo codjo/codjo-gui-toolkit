@@ -45,7 +45,20 @@ public class JCalendarMonthViewTest extends UISpecTestCase {
         calendar.enableSelection(false);
 
         org.uispec4j.Panel gui = new org.uispec4j.Panel(calendar);
+        assertTrue(gui.getTable().contentEquals(
+              new String[]{"lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim."},
+              new String[][]{
+                    {"30", "31", "1", "2", "3", "4", "5"},
+                    {"6", "7", "8", "9", "10", "11", "12"},
+                    {"13", "14", "15", "16", "17", "18", "19"},
+                    {"20", "21", "22", "23", "24", "25", "26"},
+                    {"27", "28", "29", "1", "2", "3", "4"},
+                    {"5", "6", "7", "8", "9", "10", "11"},
+              }));
+
         assertFalse(gui.getTable().isEnabled());
+        gui.getTable().click(1, 2);
+        assertSelectedDates(new String[0], calendar);
     }
 
 

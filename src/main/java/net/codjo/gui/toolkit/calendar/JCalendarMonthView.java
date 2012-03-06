@@ -21,6 +21,7 @@ public class JCalendarMonthView extends JCalendar {
     private List<Date> selectedDates = new ArrayList<Date>();
     private int currentMonth;
     private List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener>();
+    private JCalendarMonthView.CalendarSelector calendarSelector = new CalendarSelector();
 
 
     public JCalendarMonthView() {
@@ -34,7 +35,7 @@ public class JCalendarMonthView extends JCalendar {
         add(monthLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
                                                GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-        calendar.addMouseListener(new CalendarSelector());
+        calendar.addMouseListener(calendarSelector);
         calendar.setSelectionForeground(GuiUtil.DEFAULT_BLACK_COLOR);
         calendar.setSelectionBackground(Color.WHITE);
         setDateRenderer(new MonthViewCalendarRenderer());
@@ -60,6 +61,7 @@ public class JCalendarMonthView extends JCalendar {
         }
         this.selectedDates = holidayList;
         getDateRenderer().setNoValidDate(holidayList);
+        repaint();
     }
 
 
@@ -86,6 +88,10 @@ public class JCalendarMonthView extends JCalendar {
 
     public void enableSelection(boolean enable) {
         calendar.setEnabled(enable);
+        calendar.removeMouseListener(calendarSelector);
+        if (enable) {
+            calendar.addMouseListener(calendarSelector);
+        }
     }
 
 
