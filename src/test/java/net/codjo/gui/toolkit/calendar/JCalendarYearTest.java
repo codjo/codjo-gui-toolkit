@@ -21,7 +21,7 @@ public class JCalendarYearTest extends UISpecTestCase {
 
     public void test_nominal() throws Exception {
         JCalendarYear calendarYear = new JCalendarYear();
-        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
 
         calendarYear.setYear("2012");
         calendarYear.setLocale(Locale.ENGLISH);
@@ -69,7 +69,7 @@ public class JCalendarYearTest extends UISpecTestCase {
 
         calendarYear.setHolidays(holidays);
 
-        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
         assertFalse(gui.getTable("Calendar_0").isEnabled());
         assertTrue(gui.getTable("Calendar_0").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "31", "1"}));
         assertTrue(gui.getTable("Calendar_0").rowEquals(1, new Object[]{"2", "3", "4", "5", "6", "7", "8"}));
@@ -244,7 +244,25 @@ public class JCalendarYearTest extends UISpecTestCase {
         calendarYear.setYear("2012");
         calendarYear.setLocale(Locale.FRENCH);
 
-        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
+
+        List<Date> holidays = new ArrayList<Date>();
+        holidays.add(java.sql.Date.valueOf("2012-01-02"));
+        holidays.add(java.sql.Date.valueOf("2012-01-05"));
+
+        calendarYear.setHolidays(holidays);
+
+        assertTrue(gui.getTable("Calendar_0").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "31", "1"}));
+        assertTrue(gui.getTable("Calendar_0").rowEquals(1, new Object[]{"2", "3", "4", "5", "6", "7", "8"}));
+        assertTrue(gui.getTable("Calendar_0").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray},
+              {HOLIDAY_COLOR, BLACK, BLACK, HOLIDAY_COLOR, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
         gui.getTable("Calendar_0").click(2, 3);
         gui.getTable("Calendar_1").click(2, 3);
         gui.getTable("Calendar_2").click(2, 3);
@@ -261,6 +279,8 @@ public class JCalendarYearTest extends UISpecTestCase {
         gui.getTable("Calendar_11").click(4, 2);
 
         assertSelectedDates(new String[]{
+              "2012-01-02",
+              "2012-01-05",
               "2012-01-12",
               "2012-02-16",
               "2012-03-15",
@@ -276,6 +296,30 @@ public class JCalendarYearTest extends UISpecTestCase {
               "2012-12-20",
               "2012-12-26"
         }, calendarYear);
+
+        holidays.clear();
+        holidays.add(java.sql.Date.valueOf("2012-02-23"));
+        holidays.add(java.sql.Date.valueOf("2012-03-24"));
+
+        calendarYear.setHolidays(holidays);
+        assertSelectedDates(new String[]{"2012-02-23", "2012-03-24"}, calendarYear);
+
+        holidays.clear();
+        calendarYear.setHolidays(holidays);
+        assertSelectedDates(new String[0], calendarYear);
+
+        holidays.add(java.sql.Date.valueOf("2012-02-23"));
+        holidays.add(java.sql.Date.valueOf("2012-03-24"));
+        calendarYear.setHolidays(holidays);
+        assertSelectedDates(new String[]{"2012-02-23", "2012-03-24"}, calendarYear);
+
+        holidays.clear();
+        holidays.add(java.sql.Date.valueOf("2012-05-10"));
+        calendarYear.setHolidays(holidays);
+        assertSelectedDates(new String[]{"2012-05-10"}, calendarYear);
+
+        calendarYear.setHolidays(null);
+        assertSelectedDates(new String[0], calendarYear);
     }
 
 
@@ -289,7 +333,7 @@ public class JCalendarYearTest extends UISpecTestCase {
 
         calendarYear.addDateSelectionListener(new DateSelectionListenerMock(logString));
 
-        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear.getMainPanel());
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
 
         gui.getTable("Calendar_0").click(2, 3);
         assertEquals("selectionChanged()", logString.getContent());
@@ -377,7 +421,7 @@ public class JCalendarYearTest extends UISpecTestCase {
         calendarYear.setHolidays(holidays);
 
         JFrame frame = new JFrame("Test Renderer");
-        frame.getContentPane().add(calendarYear.getMainPanel());
+        frame.getContentPane().add(calendarYear);
         frame.pack();
         frame.setVisible(true);
         frame.addWindowListener(new WindowAdapter() {

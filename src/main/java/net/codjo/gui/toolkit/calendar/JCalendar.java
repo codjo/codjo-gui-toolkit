@@ -67,7 +67,6 @@ public class JCalendar extends JPanel {
         });
 
         setLocale(calendarModel.getLocale());
-//        addTableSelectionListener();
         jbInit();
         calendar.setName("CalendarTable");
         monthComboBox.setName("MonthCombo");
@@ -197,7 +196,7 @@ public class JCalendar extends JPanel {
         yearComboBox.setMaximumRowCount(5);
         yearComboBox.setPreferredSize(new Dimension(74, 19));
         yearComboBox.setCalendarModel(calendarModel);
-        this.setPreferredSize(new Dimension(220, 170));
+        this.setPreferredSize(new Dimension(220, 150));
         helpLabel.setText(" ");
         helpLabel.setName("HelpLabel");
         this.add(yearComboBox,

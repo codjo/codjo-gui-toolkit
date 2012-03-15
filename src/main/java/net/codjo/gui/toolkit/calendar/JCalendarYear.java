@@ -1,5 +1,6 @@
 package net.codjo.gui.toolkit.calendar;
 import com.jidesoft.comparator.DateComparator;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,7 +15,7 @@ import javax.swing.JPanel;
 /**
  *
  */
-public class JCalendarYear {
+public class JCalendarYear extends JPanel {
     public static final Color HOLIDAY_FOREGROUND = Color.BLACK;
     public static final Color HOLIDAY_BACKGROUND = new Color(200, 200, 255);
 
@@ -36,6 +37,9 @@ public class JCalendarYear {
 
 
     public JCalendarYear() {
+        setLayout(new BorderLayout());
+        add(mainPanel, BorderLayout.CENTER);
+
         monthIndexToCalendar.put(Calendar.JANUARY, january);
         monthIndexToCalendar.put(Calendar.FEBRUARY, february);
         monthIndexToCalendar.put(Calendar.MARCH, march);
@@ -50,11 +54,6 @@ public class JCalendarYear {
         monthIndexToCalendar.put(Calendar.DECEMBER, december);
 
         setEditionMode(false);
-    }
-
-
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 
 
@@ -94,6 +93,7 @@ public class JCalendarYear {
     }
 
 
+    @Override
     public void setLocale(Locale locale) {
         for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
             monthView.setLocale(locale);
@@ -102,6 +102,10 @@ public class JCalendarYear {
 
 
     public void setHolidays(List<Date> holidays) {
+        for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
+            monthView.setHolidays(null);
+        }
+
         if (holidays == null) {
             return;
         }
@@ -127,7 +131,7 @@ public class JCalendarYear {
             Integer monthIndex = entryHoliday.getKey();
             List<Date> holidayList = entryHoliday.getValue();
             JCalendarMonthView calendarMonthView = monthIndexToCalendar.get(monthIndex);
-            calendarMonthView.getDateRenderer().setNoValidDate(holidayList);
+            calendarMonthView.setHolidays(holidayList);
         }
     }
 
