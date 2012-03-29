@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
+import net.codjo.gui.toolkit.i18n.InternationalizationUtil;
+import net.codjo.i18n.common.TranslationManager;
+import net.codjo.i18n.gui.TranslationNotifier;
 /**
  * Classe permettant d'afficher un message d'erreur à l'utilisateur.
  *
@@ -34,6 +37,10 @@ import javax.swing.border.EmptyBorder;
  * @see javax.swing.JOptionPane
  */
 public final class ErrorDialog {
+    private static TranslationManager translationManager;
+    private static TranslationNotifier translationNotifier;
+
+
     /**
      * Constructeur.
      *
@@ -43,6 +50,7 @@ public final class ErrorDialog {
      * @param exceptionDescription Message decrivant l'exception
      */
     private ErrorDialog(Component aFrame, String message, String exceptionMsg, String exceptionDescription) {
+        checkTranslationBackpack();
         JTextArea textArea = buildTextArea(exceptionMsg);
         JTextArea detailArea = buildErrorDetail(exceptionDescription);
         detailArea.setLineWrap(false);
@@ -61,7 +69,24 @@ public final class ErrorDialog {
 
         JDialog dialog = optionPane.createDialog(aFrame, "Erreur");
         dialog.setResizable(true);
+
+        InternationalizationUtil.registerBundlesIfNeeded(translationManager);
+        translationNotifier.addInternationalizableComponent(dialog, "ErrorDialog.title");
+        translationNotifier.addInternationalizableComponent(tabPane, null, new String[]{
+              "ErrorDialog.messageTab.label", "ErrorDialog.detailTab.label"
+        });
+
         dialog.setVisible(true);
+    }
+
+
+    private void checkTranslationBackpack() {
+        if ((translationManager == null) || (translationNotifier == null)) {
+            throw new IllegalArgumentException(
+                  "Cannot launch internationalization. "
+                  + "TranslationNotifier and TranslationManager "
+                  + " must be set upon ErrorDialog class.");
+        }
     }
 
 
@@ -87,8 +112,8 @@ public final class ErrorDialog {
     /**
      * Création d'un dialogue ErrorDialog.
      *
-     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur
-     * OK. <br> La methode peutê être appelée par le thread évènement. </p>
+     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur OK. <br>
+     * La methode peutê être appelée par le thread évènement. </p>
      *
      * @param aFrame       Composant GUI parent
      * @param message      Message titre
@@ -102,8 +127,8 @@ public final class ErrorDialog {
     /**
      * Création d'un dialogue ErrorDialog à partir d'une exception.
      *
-     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur
-     * OK. <br> La methode peut être appelée par le thread évènement. </p>
+     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur OK. <br>
+     * La methode peut être appelée par le thread évènement. </p>
      *
      * @param aFrame  Composant GUI parent
      * @param message Message titre
@@ -121,8 +146,8 @@ public final class ErrorDialog {
     /**
      * Création d'un dialogue ErrorDialog à partir d'une exception.
      *
-     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur
-     * OK. <br> La methode peut être appelée par le thread évènement. </p>
+     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur OK. <br>
+     * La methode peut être appelée par le thread évènement. </p>
      *
      * @param aFrame           Composant GUI parent
      * @param message          Message titre
@@ -137,8 +162,8 @@ public final class ErrorDialog {
     /**
      * Création d'un dialogue ErrorDialog à partir d'une exception.
      *
-     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur
-     * OK. <br> La methode peut être appelé par le thread évênement. </p>
+     * <p> Le dialogue crée est affiché. Le thread courant est bloqué tant que l'utilisateur ne clique pas sur OK. <br>
+     * La methode peut être appelé par le thread évênement. </p>
      *
      * @param aFrame       Composant GUI parent
      * @param message      Message titre
@@ -147,6 +172,13 @@ public final class ErrorDialog {
      */
     public static void show(Component aFrame, String message, String errorMessage, Throwable error) {
         new ErrorDialog(aFrame, message, errorMessage, buildStackTrace(error));
+    }
+
+
+    public static void setTranslationBackpack(TranslationManager translationManager,
+                                              TranslationNotifier translationNotifier) {
+        ErrorDialog.translationManager = translationManager;
+        ErrorDialog.translationNotifier = translationNotifier;
     }
 
 

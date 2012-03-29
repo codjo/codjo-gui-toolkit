@@ -28,9 +28,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.HyperlinkEvent;
+import net.codjo.gui.toolkit.i18n.InternationalizationUtil;
+import net.codjo.i18n.common.TranslationManager;
+import net.codjo.i18n.gui.InternationalizableContainer;
+import net.codjo.i18n.gui.TranslationNotifier;
 import org.apache.log4j.Logger;
 /**
  * Affiche une fenêtre "A propos" contenant les evolutions de l'application.
@@ -38,13 +41,14 @@ import org.apache.log4j.Logger;
  * @author $Author: gaudefr $
  * @version $Revision: 1.10 $
  */
-public class AboutWindow extends JDialog implements ActionListener {
+public class AboutWindow extends JDialog implements ActionListener, InternationalizableContainer {
     private static final Logger APP = Logger.getLogger(AboutWindow.class);
     private JLabel applicationLabel = new JLabel("Application : ");
     private JLabel versionLabel = new JLabel("Version actuelle : ");
     private JEditorPane historicText = new JEditorPane();
     private URL historicHTMLFile;
     private JButton quitButton = new JButton("Fermer");
+    private JPanel changeLogPanel;
 
 
     /**
@@ -56,7 +60,8 @@ public class AboutWindow extends JDialog implements ActionListener {
      * @param historicHTMLFile L'URL du fichier HTML contenant l'historique des évolutions
      */
     public AboutWindow(Frame parent, String applicationName, String version,
-                       URL historicHTMLFile) {
+                       URL historicHTMLFile, TranslationManager translationManager,
+                       TranslationNotifier translationNotifier) {
         super(parent);
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         try {
@@ -68,9 +73,12 @@ public class AboutWindow extends JDialog implements ActionListener {
             historicText.setPage(historicHTMLFile);
         }
         catch (Exception ex) {
-            APP.error("URL invalide : " + historicHTMLFile.toString(), ex);
+            APP.error("Invalid URL: " + historicHTMLFile.toString(), ex);
         }
         this.historicHTMLFile = historicHTMLFile;
+
+        InternationalizationUtil.registerBundlesIfNeeded(translationManager);
+        translationNotifier.addInternationalizableContainer(this);
     }
 
 
@@ -83,6 +91,15 @@ public class AboutWindow extends JDialog implements ActionListener {
         if (event.getSource() == quitButton) {
             dispose();
         }
+    }
+
+
+    public void addInternationalizableComponents(TranslationNotifier notifier) {
+        notifier.addInternationalizableComponent(this, "AboutWindow.title");
+        notifier.addInternationalizableComponent(applicationLabel, "AboutWindow.applicationLabel");
+        notifier.addInternationalizableComponent(versionLabel, "AboutWindow.versionLabel");
+        notifier.addInternationalizableComponent(quitButton, "AboutWindow.close", null);
+        notifier.addInternationalizableComponent(changeLogPanel, "AboutWindow.changeLogPanel.title");
     }
 
 
@@ -180,10 +197,14 @@ public class AboutWindow extends JDialog implements ActionListener {
     private JPanel createCenterPanel() {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
-        JScrollPane jScrollPane1 = new JScrollPane();
-        Border border =
-              BorderFactory.createEtchedBorder(Color.white, new Color(134, 134, 134));
-        jScrollPane1.setBorder(new TitledBorder(border, "Historique des versions"));
+
+        JScrollPane jScrollPane = new JScrollPane();
+        changeLogPanel = new JPanel();
+        changeLogPanel.setBorder(new TitledBorder(BorderFactory.createEtchedBorder(
+              Color.white,
+              new Color(134, 134, 134)), ""));
+        changeLogPanel.setLayout(new BorderLayout());
+        changeLogPanel.add(jScrollPane, BorderLayout.CENTER);
 
         historicText.setCaretColor(Color.black);
         historicText.setBackground(SystemColor.info);
@@ -193,8 +214,8 @@ public class AboutWindow extends JDialog implements ActionListener {
                 hyperlinkUpdate(event);
             }
         });
-        jScrollPane1.getViewport().add(historicText, null);
-        centerPanel.add(jScrollPane1, BorderLayout.CENTER);
+        jScrollPane.getViewport().add(historicText, null);
+        centerPanel.add(changeLogPanel, BorderLayout.CENTER);
 
         return centerPanel;
     }
