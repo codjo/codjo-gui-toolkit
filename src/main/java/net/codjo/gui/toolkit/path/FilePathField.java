@@ -4,8 +4,6 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.path;
-import net.codjo.gui.toolkit.fileChooser.FileChooserManager;
-import net.codjo.gui.toolkit.util.ErrorDialog;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,36 +22,81 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import net.codjo.gui.toolkit.fileChooser.FileChooserManager;
+import net.codjo.gui.toolkit.i18n.InternationalizationUtil;
+import net.codjo.gui.toolkit.util.ErrorDialog;
+import net.codjo.i18n.common.TranslationManager;
+import net.codjo.i18n.gui.InternationalizableContainer;
+import net.codjo.i18n.gui.TranslationNotifier;
 import org.apache.log4j.Logger;
 /**
  * Panel permettant de selectionner un fichier.
  */
-public class FilePathField extends JPanel {
-    private static final String TITLE = "Selection du fichier";
+public class FilePathField extends JPanel implements InternationalizableContainer {
     private static final Logger LOG = Logger.getLogger(FilePathField.class);
-    private static final ImageIcon OPEN_ICON
-          = new ImageIcon(FilePathField.class.getResource("folderOpen.png"));
+    private static final ImageIcon OPEN_ICON = new ImageIcon(FilePathField.class.getResource("folderOpen.png"));
     private static final ImageIcon SEARCH_ICON = new ImageIcon(FilePathField.class.getResource("search.png"));
-
     private JLabel fileLabel = new JLabel();
+
     private JTextField fileNameField = new JTextField();
     private JButton openFileButton = new JButton();
     private JButton selectButton = new JButton();
-
     private FileChooserManager fileChooserManager;
+
     private String defaultFolder = "";
     private boolean onlyInDefaultFolder;
     private Component parent;
 
+    private String fileChooserTitle = "Selection du fichier";
+    private String cantDisplayFileMessage = "Impossible d'afficher le fichier";
+    private String inconsistentMessage = "Fichier non conforme !";
+    private String badFileLocationMessage = "Le fichier doit se trouver dans le repertoire";
+
 
     public FilePathField() {
-        initGui();
+        this(null);
     }
 
 
     public FilePathField(Component parent) {
+        this(parent, null, null);
+    }
+
+
+    public FilePathField(Component parent,
+                         TranslationManager translationManager,
+                         TranslationNotifier translationNotifier) {
         this.parent = parent;
+
         initGui();
+        setTranslationBackpack(translationManager, translationNotifier);
+    }
+
+
+    public void setTranslationBackpack(TranslationManager translationManager, TranslationNotifier translationNotifier) {
+        if (translationManager != null && translationNotifier != null) {
+            InternationalizationUtil.registerBundlesIfNeeded(translationManager);
+            translationNotifier.addInternationalizableContainer(this);
+
+            fileChooserTitle = translationManager.translate("FilePathField.fileChooserTitle",
+                                                            translationNotifier.getLanguage());
+            fileChooserManager.setTitle(fileChooserTitle);
+
+            cantDisplayFileMessage = translationManager.translate("FilePathField.cantDisplayFileMessage",
+                                                                  translationNotifier.getLanguage());
+            inconsistentMessage = translationManager.translate("FilePathField.inconsistentMessage",
+                                                               translationNotifier.getLanguage());
+            badFileLocationMessage = translationManager.translate("FilePathField.badFileLocationMessage",
+                                                                  translationNotifier.getLanguage());
+        }
+    }
+
+
+    public void addInternationalizableComponents(TranslationNotifier translationNotifier) {
+        translationNotifier.addInternationalizableComponent(selectButton, null, "FilePathField.selectButton.tooltip");
+        translationNotifier.addInternationalizableComponent(openFileButton,
+                                                            null,
+                                                            "FilePathField.openFileButton.tooltip");
     }
 
 
@@ -95,8 +138,7 @@ public class FilePathField extends JPanel {
 
 
     public void setLabelSize(int labelSize) {
-        fileLabel.setPreferredSize(new Dimension(labelSize,
-                                                 fileLabel.getPreferredSize().height));
+        fileLabel.setPreferredSize(new Dimension(labelSize, fileLabel.getPreferredSize().height));
         this.invalidate();
     }
 
@@ -186,9 +228,8 @@ public class FilePathField extends JPanel {
             proc.destroy();
         }
         catch (Exception ex) {
-            String message = "Impossible d'afficher le fichier";
-            LOG.error(message, ex);
-            ErrorDialog.show(this, message, ex);
+            LOG.error(cantDisplayFileMessage, ex);
+            ErrorDialog.show(this, cantDisplayFileMessage, ex);
         }
     }
 
@@ -203,8 +244,8 @@ public class FilePathField extends JPanel {
         if (file != null && isOnlyInDefaultFolder()) {
             // on vérifie que le fichier se trouve dans le bon répertoire
             if (!isInDefaultFolder(newFile)) {
-                ErrorDialog.show(this, "Fichier non conforme ! ",
-                                 "Le fichier doit se trouver dans le repertoire " + getDefaultFolder());
+                ErrorDialog.show(this, inconsistentMessage,
+                                 badFileLocationMessage + " " + getDefaultFolder());
                 return;
             }
             newFile = newFile.substring(getDefaultFolder().length());
@@ -215,14 +256,14 @@ public class FilePathField extends JPanel {
             firePropertyChange("fileName", oldFile, newFile);
         }
         catch (PropertyVetoException ex) {
-            ErrorDialog.show(this, "Fichier non conforme ", ex.getMessage());
+            ErrorDialog.show(this, inconsistentMessage, ex.getMessage());
         }
     }
 
 
     private void initFileChooserManager() {
         fileChooserManager = new FileChooserManager();
-        fileChooserManager.setTitle(TITLE);
+        fileChooserManager.setTitle(fileChooserTitle);
         fileChooserManager.setSelectionMode(JFileChooser.FILES_ONLY);
     }
 
@@ -251,14 +292,13 @@ public class FilePathField extends JPanel {
         selectButton.setPreferredSize(new Dimension(40, 21));
         selectButton.setMinimumSize(new Dimension(40, 21));
         selectButton.setIcon(SEARCH_ICON);
-        selectButton.setToolTipText("Rechercher le fichier");
+
         openFileButton.setEnabled(false);
         openFileButton.setName("openFileButton");
         openFileButton.setBorder(BorderFactory.createEmptyBorder());
         openFileButton.setPreferredSize(new Dimension(40, 21));
         openFileButton.setMinimumSize(new Dimension(40, 21));
         openFileButton.setIcon(OPEN_ICON);
-        openFileButton.setToolTipText("Visualiser le fichier");
         openFileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 openFile();

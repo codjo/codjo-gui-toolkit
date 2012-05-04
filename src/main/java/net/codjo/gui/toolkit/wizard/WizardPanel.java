@@ -4,8 +4,6 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.wizard;
-import net.codjo.gui.toolkit.text.AntialiasedJLabel;
-import net.codjo.gui.toolkit.util.GuiUtil;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,13 +22,19 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import net.codjo.gui.toolkit.i18n.InternationalizationUtil;
+import net.codjo.gui.toolkit.text.AntialiasedJLabel;
+import net.codjo.gui.toolkit.util.GuiUtil;
+import net.codjo.i18n.common.TranslationManager;
+import net.codjo.i18n.gui.InternationalizableContainer;
+import net.codjo.i18n.gui.TranslationNotifier;
 /**
  * Panneau d'affichage d'un wizard.
  *
  * @author $Author: gaudefr $
  * @version $Revision: 1.8 $
  */
-public class WizardPanel extends JPanel {
+public class WizardPanel extends JPanel implements InternationalizableContainer {
     private JButton applyButton = new JButton();
     private ButtonEffect buttonEffect = new ButtonEffect();
     private JPanel buttonPanel = new JPanel();
@@ -45,6 +49,8 @@ public class WizardPanel extends JPanel {
     private Icon wizardIcon = null;
     private JLabel wizardIconLabel = new JLabel();
     private Wizard wizard;
+    private TranslationManager translationManager;
+    private TranslationNotifier translationNotifier;
 
 
     public WizardPanel() {
@@ -69,6 +75,37 @@ public class WizardPanel extends JPanel {
     }
 
 
+    public void addInternationalizableComponents(TranslationNotifier notifier) {
+        translationNotifier.addInternationalizableComponent(cancelButton, "WizardPanel.cancelButton", null);
+        translationNotifier.addInternationalizableComponent(applyButton,
+                                                            wizard.getFinalStep().getName(),
+                                                            "WizardPanel.applyButton.tooltip");
+        translationNotifier.addInternationalizableComponent(nextButton,
+                                                            "WizardPanel.nextButton",
+                                                            "WizardPanel.nextButton.tooltip");
+        translationNotifier.addInternationalizableComponent(previousButton,
+                                                            "WizardPanel.previousButton",
+                                                            "WizardPanel.previousButton.tooltip");
+    }
+
+
+    public void setTranslationBackpack(TranslationManager manager, TranslationNotifier notifier) {
+        this.translationManager = manager;
+        this.translationNotifier = notifier;
+    }
+
+
+    private void translateComponent(JLabel label, String key) {
+        if (translationManager != null && translationNotifier != null &&
+            translationManager.hasKey(key, translationNotifier.getLanguage())) {
+            label.setText(translationManager.translate(key, translationNotifier.getLanguage()));
+        }
+        else {
+            label.setText(key);
+        }
+    }
+
+
     public void setWizard(Wizard wizard) {
         if (this.wizard != null) {
             throw new IllegalStateException("Deja défini");
@@ -82,6 +119,11 @@ public class WizardPanel extends JPanel {
         this.wizard.addPropertyChangeListener(Wizard.WIZARD_FINISHING, stepPanelUpdater);
         if (wizard.getCurrentStep() == null) {
             wizard.nextStep();
+        }
+
+        if (translationManager != null && translationNotifier != null) {
+            InternationalizationUtil.registerBundlesIfNeeded(translationManager);
+            translationNotifier.addInternationalizableContainer(this);
         }
     }
 
@@ -217,7 +259,7 @@ public class WizardPanel extends JPanel {
     public void repaintStep(Step step) {
         stepPanel.removeAll();
         if (step != null) {
-            stepLabel.setText(step.getName());
+            translateComponent(stepLabel, step.getName());
             stepPanel.add(step.getGui(), BorderLayout.CENTER);
         }
         stepPanel.validate();

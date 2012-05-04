@@ -5,7 +5,6 @@
  */
 package net.codjo.gui.toolkit.wizard;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
@@ -21,10 +20,10 @@ public class NextStepAction extends AbstractAction implements PropertyChangeList
     private static final Logger APP = Logger.getLogger(NextStepAction.class);
     private Wizard wizard;
 
+
     public NextStepAction(Wizard wizard) {
         putValue(NAME, "Suivant >");
         putValue(SHORT_DESCRIPTION, "Etape suivante");
-        putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.wizard = wizard;
 
         setEnabled(this.wizard.canGoNext());
@@ -32,6 +31,7 @@ public class NextStepAction extends AbstractAction implements PropertyChangeList
         this.wizard.addPropertyChangeListener(Wizard.CURRENT_STEP_PROPERTY, this);
         this.wizard.addPropertyChangeListener(Wizard.WIZARD_FINISHING, this);
     }
+
 
     public void actionPerformed(ActionEvent evt) {
         try {
