@@ -4,7 +4,6 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit;
-import net.codjo.gui.toolkit.date.DateField;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,10 +11,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import net.codjo.gui.toolkit.date.DateField;
 /**
- * This class provides a panel for laying out labelled elements neatly with all the labels and elements
- * aligned down the screen. <a href="http://www.javaworld.com/javaworld/jw-10-2002/jw-1004-dialog.html">
- * article</a>
+ * This class provides a panel for laying out labelled elements neatly with all the labels and elements aligned down the
+ * screen. <a href="http://www.javaworld.com/javaworld/jw-10-2002/jw-1004-dialog.html"> article</a>
  *
  * @author David Fraser
  * @author Michael Harris
@@ -64,6 +63,11 @@ public class LabelledItemPanel extends JPanel {
     }
 
 
+    public void addItem(JLabel label, JComponent item) {
+        addItem(label, item, new Insets(10, 10, 0, 0), new Insets(10, 10, 0, 10));
+    }
+
+
     public void addItem(String labelText, JPanel panel, boolean fillVertical) {
         JLabel label = new JLabel(labelText);
         GridBagConstraints labelConstraints = new GridBagConstraints();
@@ -103,6 +107,11 @@ public class LabelledItemPanel extends JPanel {
         if (item != null && item.getName() != null) {
             label.setName(item.getName() + ".label");
         }
+        addItem(label, item, labelInsets, itemInset);
+    }
+
+
+    public void addItem(JLabel label, JComponent item, Insets labelInsets, Insets itemInset) {
 
         GridBagConstraints labelConstraints = new GridBagConstraints();
 
