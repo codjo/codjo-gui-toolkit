@@ -137,8 +137,7 @@ public final class FileChooserManager {
      *
      * @param fileName      Le nom du fichier (positionne le fileChooser dessus)
      * @param chooserTitle  Le titre du fileChooser
-     * @param mode          JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY,
-     *                      JFileChooser.FILES_AND_DIRECTORIES
+     * @param mode          JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY, JFileChooser.FILES_AND_DIRECTORIES
      * @param fileTypeLabel Le label du type de fichier
      * @param extension     une liste d'extension possible (ex : "txt,TXT,config")
      *
@@ -259,11 +258,11 @@ public final class FileChooserManager {
 
 
     private JFileChooser createFileChooser() {
-        // Traduction du fileChooser en français
-        FileChooserUtils.setUILanguage();
+        FileChooserUtils.initUILanguage();
 
         // On pointe par defaut sur le lecteur C
         JFileChooser chooser = new JFileChooser();
+        chooser.setLocale(FileChooserUtils.getUILanguage());
         chooser.setFileSelectionMode(selectionMode);
 
         // Init des outils du fileChooser

@@ -19,7 +19,11 @@ import javax.swing.UIManager;
  * @author $Author: gaudefr $
  * @version $Revision: 1.6 $
  */
-final class FileChooserUtils {
+public final class FileChooserUtils {
+
+    private static Locale defaultLanguage = Locale.FRANCE;
+
+
     private FileChooserUtils() {
     }
 
@@ -43,11 +47,18 @@ final class FileChooserUtils {
     }
 
 
-    /**
-     * Traduit en français tous les éléments du fileChooser.
-     */
-    public static void setUILanguage() {
-        ResourceBundle rb = ResourceBundle.getBundle("net.codjo.gui.toolkit.fileChooser.FileChooser", Locale.ENGLISH);
+    public static void setUILanguage(Locale language) {
+        defaultLanguage = language;
+    }
+
+
+    public static Locale getUILanguage() {
+        return defaultLanguage;
+    }
+
+
+    public static void initUILanguage() {
+        ResourceBundle rb = ResourceBundle.getBundle("net.codjo.gui.toolkit.fileChooser.FileChooser", defaultLanguage);
 
         UIManager.put("FileChooser.lookInLabelText", rb.getString("lookInLabelText"));
         UIManager.put("FileChooser.filesOfTypeLabelText",
