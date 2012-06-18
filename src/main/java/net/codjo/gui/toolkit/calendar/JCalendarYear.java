@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.JPanel;
+import javax.swing.text.Highlighter;
 /**
  *
  */
@@ -135,6 +136,11 @@ public class JCalendarYear extends JPanel {
         }
     }
 
+    public void setDateHighlighter(DateHighlighter dateHighlighter) {
+        for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
+            monthView.setDateHighlighter(dateHighlighter);
+        }
+    }
 
     public List<Date> getSelectedDates() {
         List<Date> selectedDates = new ArrayList<Date>();

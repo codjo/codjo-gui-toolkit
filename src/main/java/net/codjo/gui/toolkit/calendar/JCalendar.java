@@ -14,7 +14,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.JLabel;
@@ -111,6 +110,11 @@ public class JCalendar extends JPanel {
 
     public DateHandler getDateHandler() {
         return getDateRenderer().getDateHandler();
+    }
+
+
+    public void setDateHighlighter(DateHighlighter dateHighlighter) {
+        getDateRenderer().setDateHighlighter(dateHighlighter);
     }
 
 
@@ -249,7 +253,7 @@ public class JCalendar extends JPanel {
         }
         else {
             helpLabel.setText(DateFormat.getDateInstance(DateFormat.FULL, getLocale())
-                  .format(value));
+                                    .format(value));
         }
     }
 

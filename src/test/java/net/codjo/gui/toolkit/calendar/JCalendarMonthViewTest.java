@@ -167,6 +167,89 @@ public class JCalendarMonthViewTest extends UISpecTestCase {
     }
 
 
+    public void test_setDateHighlighter() throws Exception {
+        JCalendarMonthView calendar = new JCalendarMonthView();
+        calendar.setMonth(Calendar.FEBRUARY, "2012");
+
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendar);
+
+        assertTrue(gui.getTable().contentEquals(
+              new String[]{"lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim."},
+              new String[][]{
+                    {"30", "31", "1", "2", "3", "4", "5"},
+                    {"6", "7", "8", "9", "10", "11", "12"},
+                    {"13", "14", "15", "16", "17", "18", "19"},
+                    {"20", "21", "22", "23", "24", "25", "26"},
+                    {"27", "28", "29", "1", "2", "3", "4"},
+                    {"5", "6", "7", "8", "9", "10", "11"},
+              }));
+
+        final List<Date> highlightDates = new ArrayList<Date>();
+        highlightDates.add(java.sql.Date.valueOf("2012-02-23"));
+        highlightDates.add(java.sql.Date.valueOf("2012-02-24"));
+
+        calendar.setDateHighlighter(new DateHighlighter() {
+            public boolean highlight(Date date) {
+                return highlightDates.contains(date);
+            }
+
+
+            public Color getHighlightForeground() {
+                return Color.BLUE;
+            }
+
+
+            public Color getHighlightBackground() {
+                return Color.GREEN;
+            }
+        });
+
+        assertTrue(gui.getTable("Calendar_1").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.BLUE, Color.BLUE, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_1").backgroundEquals(
+              new Object[][]{
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.GREEN, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        highlightDates.clear();
+        highlightDates.add(java.sql.Date.valueOf("2012-02-16"));
+        highlightDates.add(java.sql.Date.valueOf("2012-02-17"));
+
+        assertTrue(gui.getTable("Calendar_1").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.BLUE, Color.BLUE, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_1").backgroundEquals(
+              new Object[][]{
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.GREEN, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+    }
+
+
     public void test_monthListener() {
         LogString logString = new LogString();
 

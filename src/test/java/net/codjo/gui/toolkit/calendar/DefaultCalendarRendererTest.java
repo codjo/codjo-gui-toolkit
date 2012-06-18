@@ -176,6 +176,93 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
     }
 
 
+    public void test_highlightDates() throws Exception {
+        final List<Date> validDates = new ArrayList<Date>();
+        validDates.add(newDate("2004-03-01"));
+        validDates.add(newDate("2004-03-02"));
+        renderer.setValidDate(validDates);
+
+        Table theTable = new Table(tableOfDates);
+
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE,
+                     Color.WHITE},
+              }
+        ));
+
+        assertTrue(theTable.backgroundEquals(
+              new Object[][]{
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        final List<Date> datesToHighlight = new ArrayList<Date>();
+        datesToHighlight.add(newDate("2004-03-01"));
+        datesToHighlight.add(newDate("2004-03-06"));
+        datesToHighlight.add(newDate("2004-03-18"));
+        datesToHighlight.add(newDate("2004-04-02"));
+
+        renderer.setDateHighlighter(new DateHighlighter() {
+            public boolean highlight(Date date) {
+                return datesToHighlight.contains(date);
+            }
+
+
+            public Color getHighlightForeground() {
+                return Color.BLUE;
+            }
+
+
+            public Color getHighlightBackground() {
+                return Color.GREEN;
+            }
+        });
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {Color.BLUE, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        assertTrue(theTable.backgroundEquals(
+              new Object[][]{
+                    {Color.GREEN, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+    }
+
+
     public static void main(String[] args) {
         JCalendarMonthView jcal = new JCalendarMonthView();
         jcal.setMonth(0, "2012");
@@ -227,7 +314,7 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
     }
 
 
-    private Date newDate(String dateStr) {
+    private static Date newDate(String dateStr) {
         return java.sql.Date.valueOf(dateStr);
     }
 }
