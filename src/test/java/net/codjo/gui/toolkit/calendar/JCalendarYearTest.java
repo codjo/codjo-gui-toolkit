@@ -69,6 +69,7 @@ public class JCalendarYearTest extends UISpecTestCase {
 
         calendarYear.setHolidays(holidays);
 
+
         org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
         assertFalse(gui.getTable("Calendar_0").isEnabled());
         assertTrue(gui.getTable("Calendar_0").rowEquals(0, new Object[]{"26", "27", "28", "29", "30", "31", "1"}));
@@ -208,6 +209,160 @@ public class JCalendarYearTest extends UISpecTestCase {
         assertTrue(gui.getTable("Calendar_11").foregroundEquals(new Object[][]{
               {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray, Color.lightGray},
               {BLACK, HOLIDAY_COLOR, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+    }
+
+
+    public void test_dateHighlighter() throws Exception {
+        JCalendarYear calendarYear = new JCalendarYear();
+        calendarYear.setYear("2012");
+        calendarYear.setLocale(Locale.FRENCH);
+
+        final List<Date> highlightDates = new ArrayList<Date>();
+        highlightDates.add(java.sql.Date.valueOf("2012-01-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-01-05"));
+        highlightDates.add(java.sql.Date.valueOf("2012-02-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-03-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-04-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-05-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-06-04"));
+        highlightDates.add(java.sql.Date.valueOf("2012-07-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-08-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-09-04"));
+        highlightDates.add(java.sql.Date.valueOf("2012-10-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-11-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-12-04"));
+
+        // we put several times the same date in the list
+        highlightDates.add(java.sql.Date.valueOf("2012-01-02"));
+        highlightDates.add(java.sql.Date.valueOf("2012-09-04"));
+
+        // we put a date with another year
+        highlightDates.add(java.sql.Date.valueOf("2011-01-03"));
+
+        calendarYear.setDateHighlighter(new DateHighlighter() {
+            public boolean highlight(Date date) {
+                return highlightDates.contains(date);
+            }
+
+
+            public Color getHighlightForeground() {
+                return Color.BLUE;
+            }
+
+
+            public Color getHighlightBackground() {
+                return Color.GREEN;
+            }
+        });
+
+        org.uispec4j.Panel gui = new org.uispec4j.Panel(calendarYear);
+        assertTrue(gui.getTable("Calendar_0").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray},
+              {Color.BLUE, BLACK, BLACK, Color.BLUE, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_1").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, BLACK, Color.BLUE, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_2").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, BLACK, Color.BLUE, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_3").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray},
+              {Color.BLUE, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_4").foregroundEquals(new Object[][]{
+              {Color.WHITE, BLACK, Color.BLUE, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_5").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, BLACK, Color.lightGray, Color.lightGray},
+              {Color.BLUE, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_6").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray},
+              {Color.BLUE, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_7").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, BLACK, Color.BLUE, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_8").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray, Color.lightGray},
+              {BLACK, Color.BLUE, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_9").foregroundEquals(new Object[][]{
+              {BLACK, Color.BLUE, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_10").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, BLACK, Color.BLUE, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
+              {BLACK, BLACK, BLACK, BLACK, BLACK, Color.WHITE, Color.WHITE},
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+        }));
+
+        assertTrue(gui.getTable("Calendar_11").foregroundEquals(new Object[][]{
+              {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.lightGray, Color.lightGray},
+              {BLACK, Color.BLUE, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
               {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
               {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},
               {BLACK, BLACK, BLACK, BLACK, BLACK, Color.lightGray, Color.lightGray},

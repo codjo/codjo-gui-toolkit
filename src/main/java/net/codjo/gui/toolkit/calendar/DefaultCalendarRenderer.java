@@ -50,6 +50,18 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
+    public void setDateHighlighter(DateHighlighter dateHighlighter) {
+        DateHighlighterHandler highlighterHandler = new DateHighlighterHandler(dateHighlighter);
+        if (dateHandler != null) {
+            highlighterHandler.setSuccessor(dateHandler);
+            notInMonth.setSuccessor(highlighterHandler);
+        }
+        else {
+            setDateHandler(highlighterHandler);
+        }
+    }
+
+
     public Color getWeekEndColor() {
         return weekEndColor;
     }
@@ -210,6 +222,30 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         @Override
         public boolean handle(Date input) {
             return !super.handle(input);
+        }
+    }
+
+    private class DateHighlighterHandler extends DateHandler {
+
+        private DateHighlighter dateHighlighter;
+
+
+        private DateHighlighterHandler(DateHighlighter dateHighlighter) {
+            this.dateHighlighter = dateHighlighter;
+        }
+
+
+        @Override
+        protected boolean handle(Date input) {
+            return dateHighlighter.highlight(input);
+        }
+
+
+        @Override
+        protected JLabel handleRenderer(Date input, JLabel renderer) {
+            renderer.setForeground(dateHighlighter.getHighlightForeground());
+            renderer.setBackground(dateHighlighter.getHighlightBackground());
+            return renderer;
         }
     }
 }
