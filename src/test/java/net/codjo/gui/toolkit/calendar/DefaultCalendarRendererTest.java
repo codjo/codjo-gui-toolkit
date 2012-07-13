@@ -5,45 +5,71 @@
  */
 package net.codjo.gui.toolkit.calendar;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import junit.framework.TestCase;
+import org.uispec4j.Table;
+import org.uispec4j.UISpecTestCase;
 /**
  * Classe de test de <code>DefaultCalendarRenderer</code>.
  *
  * @version $Revision: 1.6 $
  */
-public class DefaultCalendarRendererTest extends TestCase {
+public class DefaultCalendarRendererTest extends UISpecTestCase {
+    private static final Color DEFAULT_BLACK = new JLabel().getForeground();
+
     private DefaultCalendarRenderer renderer;
     private JTable tableOfDates;
-    private Date aDate;
 
 
     public void test_default() throws Exception {
-        // La date est dans le mois mais est un Week-end
-        assertRenderer(newDate("2004-03-07"), "7", Color.lightGray,
-                       tableOfDates.getBackground());
+        Table theTable = new Table(tableOfDates);
 
-        // La date est dans le mois est n'est pas un Week-end
-        assertRenderer(aDate, "1", tableOfDates.getForeground(),
-                       tableOfDates.getBackground());
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
 
-        // La date n'est pas dans le mois
-        assertRenderer(newDate("2004-04-01"), "1", tableOfDates.getBackground(),
-                       tableOfDates.getBackground());
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
 
-        // La date est OK (pour vérifier si un état persiste).
-        assertRenderer(aDate, "1", tableOfDates.getForeground(),
-                       tableOfDates.getBackground());
+        renderer.setWeekEndColor(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED,
+                     Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.RED,
+                     Color.RED},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
@@ -54,40 +80,192 @@ public class DefaultCalendarRendererTest extends TestCase {
 
 
     public void test_setValidDate() throws Exception {
-        final ArrayList validDates = new ArrayList();
+        final List<Date> validDates = new ArrayList<Date>();
         validDates.add(newDate("2004-03-01"));
         validDates.add(newDate("2004-03-02"));
         renderer.setValidDate(validDates);
 
-        // La date est dans le mois et est une date valide
-        assertRenderer(aDate, "1", tableOfDates.getForeground(),
-                       tableOfDates.getBackground());
+        Table theTable = new Table(tableOfDates);
 
-        // La date est OK mais pas dans la liste valide.
-        assertRenderer(newDate("2004-03-03"), "3", Color.lightGray,
-                       tableOfDates.getBackground());
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
 
-        // La date n'est pas dans le mois
-        assertRenderer(newDate("2004-04-01"), "1", tableOfDates.getBackground(),
-                       tableOfDates.getBackground());
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE,
+                     Color.WHITE},
+              }
+        ));
 
-        // La date est dans le mois et est une date valide
-        assertRenderer(newDate("2004-03-02"), "2", tableOfDates.getForeground(),
-                       tableOfDates.getBackground());
+        renderer.setNotValidForeground(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED, Color.RED},
+                    {Color.RED, Color.RED, Color.RED, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
-    private void assertRenderer(Date date, String txt, Color foreground, Color backGround) {
-        Component comp =
-              renderer.getTableCellRendererComponent(tableOfDates, date, false, false, 0, 0);
-        assertEquals(txt, ((JLabel)comp).getText());
-//        assertEquals("foreground color", foreground, comp.getForeground()); // TODO
-        assertEquals("background color", backGround, comp.getBackground());
+    public void test_setNoValidDate() throws Exception {
+        final List<Date> noValidDates = new ArrayList<Date>();
+        noValidDates.add(newDate("2004-03-01"));
+        noValidDates.add(newDate("2004-03-02"));
+        renderer.setNoValidDate(noValidDates);
+
+        Table theTable = new Table(tableOfDates);
+
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {Color.lightGray, Color.lightGray, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        renderer.setNotValidForeground(Color.RED);
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {Color.RED, Color.RED, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray,
+                     Color.lightGray},
+                    {DEFAULT_BLACK, DEFAULT_BLACK, DEFAULT_BLACK, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+    }
+
+
+    public void test_highlightDates() throws Exception {
+        final List<Date> validDates = new ArrayList<Date>();
+        validDates.add(newDate("2004-03-01"));
+        validDates.add(newDate("2004-03-02"));
+        renderer.setValidDate(validDates);
+
+        Table theTable = new Table(tableOfDates);
+
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {DEFAULT_BLACK, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE,
+                     Color.WHITE},
+              }
+        ));
+
+        assertTrue(theTable.backgroundEquals(
+              new Object[][]{
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        final List<Date> datesToHighlight = new ArrayList<Date>();
+        datesToHighlight.add(newDate("2004-03-01"));
+        datesToHighlight.add(newDate("2004-03-06"));
+        datesToHighlight.add(newDate("2004-03-18"));
+        datesToHighlight.add(newDate("2004-04-02"));
+
+        renderer.setDateHighlighter(new DateHighlighter() {
+            public boolean highlight(Date date) {
+                return datesToHighlight.contains(date);
+            }
+
+
+            public Color getHighlightForeground() {
+                return Color.BLUE;
+            }
+
+
+            public Color getHighlightBackground() {
+                return Color.GREEN;
+            }
+        });
+
+        assertTrue(theTable.foregroundEquals(
+              new Object[][]{
+                    {Color.BLUE, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
+
+        assertTrue(theTable.backgroundEquals(
+              new Object[][]{
+                    {Color.GREEN, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.GREEN, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+              }
+        ));
     }
 
 
     public static void main(String[] args) {
-        JCalendar jcal = new JCalendar();
+        JCalendarMonthView jcal = new JCalendarMonthView();
+        jcal.setMonth(0, "2012");
         jcal.setSelectedDate(new Date(System.currentTimeMillis()));
         final DateHandler handler =
               new DateHandler() {
@@ -127,15 +305,16 @@ public class DefaultCalendarRendererTest extends TestCase {
     }
 
 
+    @Override
     protected void setUp() throws Exception {
         renderer = new DefaultCalendarRenderer();
-        aDate = java.sql.Timestamp.valueOf("2004-03-01 14:25:00");
         tableOfDates = new JTable();
-        tableOfDates.setModel(new CalendarModel(Locale.FRANCE, aDate));
+        tableOfDates.setDefaultRenderer(Date.class, renderer);
+        tableOfDates.setModel(new CalendarModel(Locale.FRANCE, java.sql.Timestamp.valueOf("2004-03-01 14:25:00")));
     }
 
 
-    private Date newDate(String dateStr) {
+    private static Date newDate(String dateStr) {
         return java.sql.Date.valueOf(dateStr);
     }
 }

@@ -13,7 +13,7 @@
     </parent>
     <groupId>net.codjo.gui-toolkit</groupId>
     <artifactId>codjo-gui-toolkit</artifactId>
-    <version>3.101-SNAPSHOT</version>
+    <version>3.107-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>net.codjo.expression</groupId>
@@ -22,6 +22,14 @@
         <dependency>
             <groupId>net.codjo.i18n</groupId>
             <artifactId>codjo-i18n-gui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jidesoft</groupId>
+            <artifactId>jide-common</artifactId>
         </dependency>
         <!--Test-->
         <dependency>
@@ -74,6 +82,11 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

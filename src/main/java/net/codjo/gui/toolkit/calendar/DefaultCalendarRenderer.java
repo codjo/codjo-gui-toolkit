@@ -20,8 +20,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @version $Revision: 1.10 $
  */
 public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
+    public static final Color DEFAULT_NOT_VALID_FOREGROUND = Color.lightGray;
+    public static final Color DEFAULT_NOT_VALID_BACKGROUND = Color.WHITE;
+
     private DateHandler dateHandler;
     private NotInCurrentMonthHandler notInMonth = new NotInCurrentMonthHandler();
+    private Color weekEndColor = Color.lightGray;
+    private Color notValidForeground = DEFAULT_NOT_VALID_FOREGROUND;
+    private Color notValidBackground = DEFAULT_NOT_VALID_BACKGROUND;
 
 
     public DefaultCalendarRenderer() {
@@ -30,10 +36,59 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
-    public void setValidDate(List validDate) {
-        final InListHandler newHandler = new InListHandler(validDate);
+    public void setValidDate(List<Date> validDate) {
+        final CheckDateIsNotInListHandler newHandler = new CheckDateIsNotInListHandler(validDate);
         newHandler.setSuccessor(new WeekEndHandler());
         setDateHandler(newHandler);
+    }
+
+
+    public void setNoValidDate(List<Date> noValidDates) {
+        final CheckDateIsInListHandler newHandler = new CheckDateIsInListHandler(noValidDates);
+        newHandler.setSuccessor(new WeekEndHandler());
+        setDateHandler(newHandler);
+    }
+
+
+    public void setDateHighlighter(DateHighlighter dateHighlighter) {
+        DateHighlighterHandler highlighterHandler = new DateHighlighterHandler(dateHighlighter);
+        if (dateHandler != null) {
+            highlighterHandler.setSuccessor(dateHandler);
+            notInMonth.setSuccessor(highlighterHandler);
+        }
+        else {
+            setDateHandler(highlighterHandler);
+        }
+    }
+
+
+    public Color getWeekEndColor() {
+        return weekEndColor;
+    }
+
+
+    public void setWeekEndColor(Color weekEndColor) {
+        this.weekEndColor = weekEndColor;
+    }
+
+
+    public Color getNotValidForeground() {
+        return notValidForeground;
+    }
+
+
+    public void setNotValidForeground(Color notValidForeground) {
+        this.notValidForeground = notValidForeground;
+    }
+
+
+    public Color getNotValidBackground() {
+        return notValidBackground;
+    }
+
+
+    public void setNotValidBackground(Color notValidBackground) {
+        this.notValidBackground = notValidBackground;
     }
 
 
@@ -94,9 +149,6 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     }
 
 
-    /**
-     * Handler des dates hors mois courant.
-     */
     private static class NotInCurrentMonthHandler extends DateHandler {
         private final Calendar calendar = Calendar.getInstance();
         private int currentMonth;
@@ -124,10 +176,7 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         }
     }
 
-    /**
-     * Handler des dates week-End.
-     */
-    private static class WeekEndHandler extends DateHandler {
+    private class WeekEndHandler extends DateHandler {
         @Override
         public boolean handle(Date input) {
             return isWeekEnd(input);
@@ -136,32 +185,66 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
 
         @Override
         protected JLabel handleRenderer(Date input, JLabel renderer) {
-            renderer.setForeground(Color.lightGray);
+            renderer.setForeground(weekEndColor);
             return renderer;
         }
     }
 
-    /**
-     * Verifie que la date appartient à la liste des dates valide.
-     */
-    private static class InListHandler extends DateHandler {
-        private final List<Object> validTime;
+    private class CheckDateIsInListHandler extends DateHandler {
+        private final List<Date> dates;
 
 
-        InListHandler(List validDate) {
-            this.validTime = new ArrayList<Object>(validDate);
+        protected CheckDateIsInListHandler(List<Date> dates) {
+            this.dates = new ArrayList<Date>(dates);
         }
 
 
         @Override
         public boolean handle(Date input) {
-            return !validTime.contains(input);
+            return dates.contains(input);
         }
 
 
         @Override
         protected JLabel handleRenderer(Date input, JLabel renderer) {
-            renderer.setForeground(Color.lightGray);
+            renderer.setForeground(notValidForeground);
+            renderer.setBackground(notValidBackground);
+            return renderer;
+        }
+    }
+
+    private class CheckDateIsNotInListHandler extends CheckDateIsInListHandler {
+        CheckDateIsNotInListHandler(List<Date> dates) {
+            super(dates);
+        }
+
+
+        @Override
+        public boolean handle(Date input) {
+            return !super.handle(input);
+        }
+    }
+
+    private class DateHighlighterHandler extends DateHandler {
+
+        private DateHighlighter dateHighlighter;
+
+
+        private DateHighlighterHandler(DateHighlighter dateHighlighter) {
+            this.dateHighlighter = dateHighlighter;
+        }
+
+
+        @Override
+        protected boolean handle(Date input) {
+            return dateHighlighter.highlight(input);
+        }
+
+
+        @Override
+        protected JLabel handleRenderer(Date input, JLabel renderer) {
+            renderer.setForeground(dateHighlighter.getHighlightForeground());
+            renderer.setBackground(dateHighlighter.getHighlightBackground());
             return renderer;
         }
     }

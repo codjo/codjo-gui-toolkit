@@ -19,8 +19,14 @@ import javax.swing.UIManager;
  * @author $Author: gaudefr $
  * @version $Revision: 1.6 $
  */
-final class FileChooserUtils {
-    private FileChooserUtils() {}
+public final class FileChooserUtils {
+
+    private static Locale defaultLanguage = Locale.FRANCE;
+
+
+    private FileChooserUtils() {
+    }
+
 
     /**
      * Retourne l'extension d'un fichier.
@@ -41,44 +47,49 @@ final class FileChooserUtils {
     }
 
 
-    /**
-     * Traduit en français tous les éléments du fileChooser.
-     */
-    public static void setUILanguage() {
-        ResourceBundle rb =
-            ResourceBundle.getBundle("net.codjo.gui.toolkit.fileChooser.FileChooser",
-                Locale.FRANCE);
+    public static void setUILanguage(Locale language) {
+        defaultLanguage = language;
+    }
+
+
+    public static Locale getUILanguage() {
+        return defaultLanguage;
+    }
+
+
+    public static void initUILanguage() {
+        ResourceBundle rb = ResourceBundle.getBundle("net.codjo.gui.toolkit.fileChooser.FileChooser", defaultLanguage);
 
         UIManager.put("FileChooser.lookInLabelText", rb.getString("lookInLabelText"));
         UIManager.put("FileChooser.filesOfTypeLabelText",
-            rb.getString("filesOfTypeLabelText"));
+                      rb.getString("filesOfTypeLabelText"));
         UIManager.put("FileChooser.upFolderToolTipText",
-            rb.getString("upFolderToolTipText"));
+                      rb.getString("upFolderToolTipText"));
         UIManager.put("FileChooser.fileNameLabelText", rb.getString("fileNameLabelText"));
         UIManager.put("FileChooser.homeFolderToolTipText",
-            rb.getString("homeFolderToolTipText"));
+                      rb.getString("homeFolderToolTipText"));
         UIManager.put("FileChooser.newFolderToolTipText",
-            rb.getString("newFolderToolTipText"));
+                      rb.getString("newFolderToolTipText"));
         UIManager.put("FileChooser.listViewButtonToolTipText",
-            rb.getString("listViewButtonToolTipText"));
+                      rb.getString("listViewButtonToolTipText"));
         UIManager.put("FileChooser.detailsViewButtonToolTipText",
-            rb.getString("detailsViewButtonToolTipText"));
+                      rb.getString("detailsViewButtonToolTipText"));
         UIManager.put("FileChooser.saveButtonText", rb.getString("saveButtonText"));
         UIManager.put("FileChooser.openButtonText", rb.getString("openButtonText"));
         UIManager.put("FileChooser.cancelButtonText", rb.getString("cancelButtonText"));
         UIManager.put("FileChooser.updateButtonText", rb.getString("updateButtonText"));
         UIManager.put("FileChooser.helpButtonText", rb.getString("helpButtonText"));
         UIManager.put("FileChooser.saveButtonToolTipText",
-            rb.getString("saveButtonToolTipText"));
+                      rb.getString("saveButtonToolTipText"));
         UIManager.put("FileChooser.openButtonToolTipText",
-            rb.getString("openButtonToolTipText"));
+                      rb.getString("openButtonToolTipText"));
         UIManager.put("FileChooser.cancelButtonToolTipText",
-            rb.getString("cancelButtonToolTipText"));
+                      rb.getString("cancelButtonToolTipText"));
         UIManager.put("FileChooser.updateButtonToolTipText",
-            rb.getString("updateButtonToolTipText"));
+                      rb.getString("updateButtonToolTipText"));
         UIManager.put("FileChooser.helpButtonToolTipText",
-            rb.getString("helpButtonToolTipText"));
+                      rb.getString("helpButtonToolTipText"));
         UIManager.put("FileChooser.acceptAllFileFilterText",
-            rb.getString("acceptAllFileFilterText"));
+                      rb.getString("acceptAllFileFilterText"));
     }
 }

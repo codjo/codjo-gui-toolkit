@@ -36,12 +36,12 @@ public class JCalendar extends JPanel {
     public static final String DATE_PROPERTY_NAME = "selectedDate";
     public static final String PERIOD_PROPERTY_NAME = "period";
     private GridBagLayout gridBagLayout1 = new GridBagLayout();
-    private JLabel helpLabel = new JLabel();
-    private JTable calendar = new JTable();
+    protected JLabel helpLabel = new JLabel();
+    protected JTable calendar = new JTable();
     private JTableHeader calendarHeader = new JTableHeader();
     private CalendarModel calendarModel = new CalendarModel();
     private HeaderRenderer headerRender = new HeaderRenderer();
-    private MonthComboBox monthComboBox;
+    protected MonthComboBox monthComboBox;
     protected YearComboBox yearComboBox;
     private PeriodChangeListener periodChangeListener = new PeriodChangeListener();
     private ListSelectionListener tableSelectionListener = new TableSelectionListener();
@@ -66,7 +66,6 @@ public class JCalendar extends JPanel {
         });
 
         setLocale(calendarModel.getLocale());
-        addTableSelectionListener();
         jbInit();
         calendar.setName("CalendarTable");
         monthComboBox.setName("MonthCombo");
@@ -114,6 +113,11 @@ public class JCalendar extends JPanel {
     }
 
 
+    public void setDateHighlighter(DateHighlighter dateHighlighter) {
+        getDateRenderer().setDateHighlighter(dateHighlighter);
+    }
+
+
     private DateHandler getRootDateHandler() {
         return getDateRenderer().getRootDateHandler();
     }
@@ -144,7 +148,7 @@ public class JCalendar extends JPanel {
     }
 
 
-    private void selectCalendarModelDate() {
+    protected void selectCalendarModelDate() {
         for (int c = 0; c < calendar.getColumnCount(); c++) {
             for (int r = 0; r < calendar.getRowCount(); r++) {
                 if (calendar.getValueAt(r, c).equals(calendarModel.getDate())) {
@@ -196,8 +200,9 @@ public class JCalendar extends JPanel {
         yearComboBox.setMaximumRowCount(5);
         yearComboBox.setPreferredSize(new Dimension(74, 19));
         yearComboBox.setCalendarModel(calendarModel);
-        this.setPreferredSize(new Dimension(220, 170));
+        this.setPreferredSize(new Dimension(220, 150));
         helpLabel.setText(" ");
+        helpLabel.setName("HelpLabel");
         this.add(yearComboBox,
                  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
                                         GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -216,7 +221,7 @@ public class JCalendar extends JPanel {
     }
 
 
-    private void setSelectedDateTemp(java.util.Date selectedDate) {
+    protected void setSelectedDateTemp(java.util.Date selectedDate) {
         java.util.Date oldSelectedDate = this.selectedDate;
         if (selectedDate != null && !getRootDateHandler().selectable(selectedDate)) {
             this.selectedDate = null;
@@ -248,7 +253,7 @@ public class JCalendar extends JPanel {
         }
         else {
             helpLabel.setText(DateFormat.getDateInstance(DateFormat.FULL, getLocale())
-                  .format(value));
+                                    .format(value));
         }
     }
 

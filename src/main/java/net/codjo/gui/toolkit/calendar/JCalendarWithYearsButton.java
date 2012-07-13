@@ -22,7 +22,6 @@ public class JCalendarWithYearsButton extends JCalendar {
 
 
     public JCalendarWithYearsButton() {
-
         setPreferredSize(new Dimension(220, 370));
 
         plusOneYearButton = new JButton("+1Y");
