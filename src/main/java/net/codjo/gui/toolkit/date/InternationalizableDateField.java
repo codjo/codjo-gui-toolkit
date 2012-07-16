@@ -1,8 +1,4 @@
 package net.codjo.gui.toolkit.date;
-import net.codjo.i18n.common.Language;
-import net.codjo.i18n.common.TranslationManager;
-import net.codjo.i18n.gui.AbstractInternationalizableComponent;
-import net.codjo.i18n.gui.TranslationNotifier;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
@@ -10,6 +6,10 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.JComponent;
+import net.codjo.i18n.common.Language;
+import net.codjo.i18n.common.TranslationManager;
+import net.codjo.i18n.gui.AbstractInternationalizableComponent;
+import net.codjo.i18n.gui.TranslationNotifier;
 
 public class InternationalizableDateField extends AbstractInternationalizableComponent<DateField> {
     private WeakReference<AbstractDateField> reference;
@@ -40,6 +40,7 @@ public class InternationalizableDateField extends AbstractInternationalizableCom
         dateField.getMonthField().addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
         dateField.getYearField().addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
         dateField.getCalendarButton().addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
+        dateField.getCalHelper().setLocale(notifier.getLanguage().getLocale());
     }
 
 
@@ -66,6 +67,7 @@ public class InternationalizableDateField extends AbstractInternationalizableCom
         dateField.addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
         dateField.getDateTextField().addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
         dateField.getCalendarButton().addPropertyChangeListener(JComponent.TOOL_TIP_TEXT_KEY, listener);
+        dateField.getCalHelper().setLocale(notifier.getLanguage().getLocale());
     }
 
 
@@ -79,6 +81,7 @@ public class InternationalizableDateField extends AbstractInternationalizableCom
         if (dateField == null) {
             return;
         }
+        dateField.getCalHelper().setLocale(language.getLocale());
 
         Date date = dateField.getDate();
         if (date != null) {
