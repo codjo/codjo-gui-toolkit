@@ -4,7 +4,6 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.calendar;
-import net.codjo.gui.toolkit.swing.callback.CallBack;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,11 +18,13 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
+import net.codjo.gui.toolkit.swing.callback.CallBack;
 /**
  * Assistant pour créer une fenêtre Popup avec un calendrier.
  *
@@ -33,6 +34,7 @@ import javax.swing.text.JTextComponent;
 public abstract class AbstractCalendarHelper {
     protected JButton okButton;
     protected CallBack callBack;
+    protected Locale locale;
 
 
     protected AbstractCalendarHelper() {
@@ -46,6 +48,16 @@ public abstract class AbstractCalendarHelper {
 
     public JButton getOkButton() {
         return okButton;
+    }
+
+
+    protected Locale getLocale() {
+        return locale;
+    }
+
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
 
@@ -126,11 +138,12 @@ public abstract class AbstractCalendarHelper {
 
     protected JDialog newDialog(Window window) {
         JDialog dialog;
+        String title = (getLocale() == null || Locale.FRENCH.equals(getLocale())) ? "Selection de la Date" : "";
         if (window instanceof Frame) {
-            dialog = new JDialog((Frame)window, "Selection de la Date", true);
+            dialog = new JDialog((Frame)window, title, true);
         }
         else {
-            dialog = new JDialog((JDialog)window, "Selection de la Date", true);
+            dialog = new JDialog((JDialog)window, title, true);
         }
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.getContentPane().setLayout(new BorderLayout(5, 5));

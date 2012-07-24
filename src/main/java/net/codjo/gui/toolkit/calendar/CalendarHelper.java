@@ -4,8 +4,8 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.gui.toolkit.calendar;
-import net.codjo.gui.toolkit.swing.callback.CallBack;
 import java.util.Date;
+import net.codjo.gui.toolkit.swing.callback.CallBack;
 /**
  * Assistant pour créer une fenêtre Popup avec un calendrier.
  *
@@ -28,6 +28,9 @@ public class CalendarHelper extends AbstractCalendarHelper {
     @Override
     protected JCalendar newCalendar(final Date selectedDate) {
         final JCalendar cal = new JCalendar();
+        if (getLocale() != null) {
+            cal.setLocale(getLocale());
+        }
         cal.setSelectedDate(selectedDate);
         cal.setName("jCalendar");
         if (dateRenderer != null) {
