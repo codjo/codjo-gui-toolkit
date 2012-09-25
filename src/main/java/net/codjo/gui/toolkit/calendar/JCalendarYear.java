@@ -105,6 +105,7 @@ public class JCalendarYear extends JPanel {
     public void setHolidays(List<Date> holidays) {
         for (JCalendarMonthView monthView : monthIndexToCalendar.values()) {
             monthView.setHolidays(null);
+            monthView.removeAllTooltips();
         }
 
         if (holidays == null) {
@@ -134,6 +135,14 @@ public class JCalendarYear extends JPanel {
             JCalendarMonthView calendarMonthView = monthIndexToCalendar.get(monthIndex);
             calendarMonthView.setHolidays(holidayList);
         }
+    }
+
+    public void setTooltipForHoliday(Date holiday, String tooltip) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(holiday);
+        int monthIndex = calendar.get(Calendar.MONTH);
+        JCalendarMonthView calendarMonthView = monthIndexToCalendar.get(monthIndex);
+        calendarMonthView.setTooltipForHoliday(holiday, tooltip);
     }
 
     public void setDateHighlighter(DateHighlighter dateHighlighter) {
