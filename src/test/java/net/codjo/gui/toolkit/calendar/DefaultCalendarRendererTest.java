@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import net.codjo.gui.toolkit.util.TableUtil;
 import org.uispec4j.Table;
 import org.uispec4j.UISpecTestCase;
 /**
@@ -243,11 +244,16 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
 
         assertTrue(theTable.foregroundEquals(
               new Object[][]{
-                    {Color.BLUE, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray},
-                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
-                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray, Color.lightGray, Color.lightGray},
-                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray},
-                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
+                    {Color.BLUE, DEFAULT_BLACK, Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE,
+                     Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.BLUE, Color.lightGray, Color.lightGray,
+                     Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray, Color.lightGray,
+                     Color.lightGray, Color.lightGray},
+                    {Color.lightGray, Color.lightGray, Color.lightGray, Color.WHITE, Color.WHITE, Color.WHITE,
+                     Color.WHITE},
               }
         ));
 
@@ -260,6 +266,38 @@ public class DefaultCalendarRendererTest extends UISpecTestCase {
                     {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE},
               }
         ));
+    }
+
+
+    public void test_tooltipOnSpecificDates() throws Exception {
+        Table theTable = new Table(tableOfDates);
+
+        assertTrue(theTable.contentEquals(
+              new Object[][]{
+                    {"1", "2", "3", "4", "5", "6", "7"},
+                    {"8", "9", "10", "11", "12", "13", "14"},
+                    {"15", "16", "17", "18", "19", "20", "21"},
+                    {"22", "23", "24", "25", "26", "27", "28"},
+                    {"29", "30", "31", "1", "2", "3", "4"},
+              }
+        ));
+
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 1, 4)).getToolTipText());
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 2)).getToolTipText());
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 3)).getToolTipText());
+
+        renderer.setTooltipForDate(newDate("2004-03-12"), "ravioli");
+        renderer.setTooltipForDate(newDate("2004-03-24"), "saucisses de francfort");
+
+        assertEquals("ravioli", ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 1, 4)).getToolTipText());
+        assertEquals("saucisses de francfort",
+                     ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 2)).getToolTipText());
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 3)).getToolTipText());
+
+        renderer.removeAllTooltips();
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 1, 4)).getToolTipText());
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 2)).getToolTipText());
+        assertEquals(null, ((JLabel)TableUtil.getRenderedComponentAt(tableOfDates, 3, 3)).getToolTipText());
     }
 
 

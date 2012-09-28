@@ -163,8 +163,7 @@ public class RestrictedDateField extends DateField {
         weekEndHandler.setSuccessor(successor);
         successor = weekEndHandler;
 
-        NotExcludeDatesRangeHandler notExcludeDatesRangeHandler = new NotExcludeDatesRangeHandler(
-              this);
+        NotExcludeDatesRangeHandler notExcludeDatesRangeHandler = new NotExcludeDatesRangeHandler(this);
         notExcludeDatesRangeHandler.setSuccessor(successor);
 
         renderer.setDateHandler(notExcludeDatesRangeHandler);
@@ -274,7 +273,6 @@ public class RestrictedDateField extends DateField {
         @Override
         protected boolean handle(Date input) {
             return restrictedDateField.isInvalidDate(input);
-//            return (invalidDate != null) && invalidDate.contains(input);
         }
     }
 

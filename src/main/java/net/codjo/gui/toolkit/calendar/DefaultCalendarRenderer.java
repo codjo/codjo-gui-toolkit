@@ -9,9 +9,12 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableCellRenderer;
 /**
  * Renderer par defaut pour un calendrier. Le renderer peut etre parametre par DateHandler.
@@ -28,6 +31,7 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
     private Color weekEndColor = Color.lightGray;
     private Color notValidForeground = DEFAULT_NOT_VALID_FOREGROUND;
     private Color notValidBackground = DEFAULT_NOT_VALID_BACKGROUND;
+    private Map<Date, String> dateToTooltip = new HashMap<Date, String>();
 
 
     public DefaultCalendarRenderer() {
@@ -59,6 +63,16 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
         else {
             setDateHandler(highlighterHandler);
         }
+    }
+
+
+    public void setTooltipForDate(Date date, String tooltip) {
+        dateToTooltip.put(date, tooltip);
+    }
+
+
+    public void removeAllTooltips() {
+        dateToTooltip.clear();
     }
 
 
@@ -123,8 +137,16 @@ public class DefaultCalendarRenderer extends DefaultTableCellRenderer {
 
         notInMonth.setCurrentMonth(((CalendarModel)table.getModel()).getMonth());
 
-        return getRootDateHandler().renderer((Date)value, this, table, isSelected,
-                                             hasFocus, row, column);
+        JLabel renderer = getRootDateHandler().renderer((Date)value, this, table, isSelected,
+                                                        hasFocus, row, column);
+
+        if (dateToTooltip.keySet().contains(value)) {
+            renderer.setToolTipText(dateToTooltip.get(value));
+        }
+        else {
+            renderer.setToolTipText(null);
+        }
+        return renderer;
     }
 
 

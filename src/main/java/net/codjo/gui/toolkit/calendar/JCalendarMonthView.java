@@ -65,6 +65,16 @@ public class JCalendarMonthView extends JCalendar {
     }
 
 
+    public void setTooltipForHoliday(Date holiday, String tooltip) {
+        getDateRenderer().setTooltipForDate(holiday, tooltip);
+    }
+
+
+    public void removeAllTooltips() {
+        getDateRenderer().removeAllTooltips();
+    }
+
+
     @Override
     public Date getSelectedDate() {
         throw new RuntimeException("method not supported for " + getClass().getName());
