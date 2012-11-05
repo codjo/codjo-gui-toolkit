@@ -97,7 +97,7 @@ public class ReadOnlyManager {
     }
 
 
-    private void add(ReadOnlyComponent readOnlyComponent) {
+    public void add(ReadOnlyComponent readOnlyComponent) {
         readOnlyComponents.add(readOnlyComponent);
         if (readOnly) {
             readOnlyComponent.setReadOnly(readOnly, applyDefaultValue);

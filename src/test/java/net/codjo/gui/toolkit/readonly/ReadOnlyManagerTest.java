@@ -63,7 +63,7 @@ public class ReadOnlyManagerTest extends TestCase {
         assertEnabled(selectedCheckBox, true);
         assertEnabled(unselectedCheckBox, true);
 
-        manager.addReadOnlyComponent(button);
+        manager.add(new DefaultReadOnlyComponent(button, manager));
         manager.addReadOnlyComponent(textField, new JTextComponentValueSetter("default value"));
         manager.addReadOnlyComponent(selectedCheckBox, new JToggleButtonValueSetter((true)));
         manager.addReadOnlyComponent(unselectedCheckBox, new JToggleButtonValueSetter((false)));
