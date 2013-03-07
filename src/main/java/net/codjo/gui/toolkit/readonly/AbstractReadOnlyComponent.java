@@ -11,8 +11,6 @@ import javax.swing.JComponent;
  *
  */
 public abstract class AbstractReadOnlyComponent implements ReadOnlyComponent {
-    private static final String JDK_16 = "1.6";
-
     protected boolean readOnly;
     protected boolean applyDefaultValue;
     protected ReadOnlyValueSetter setter;
@@ -25,9 +23,7 @@ public abstract class AbstractReadOnlyComponent implements ReadOnlyComponent {
         this.applyDefaultValue = applyDefaultValue;
         this.setter = setter;
 
-        if (!System.getProperty("java.version").startsWith(JDK_16)) {
-            initForceReadOnlyListener(component, readOnlyManager);
-        }
+        initForceReadOnlyListener(component, readOnlyManager);
     }
 
 
